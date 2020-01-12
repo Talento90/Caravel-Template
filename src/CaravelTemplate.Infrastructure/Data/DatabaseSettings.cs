@@ -1,4 +1,4 @@
-namespace CaravelTemplate.WebApi.Infrastructure.Data
+namespace CaravelTemplate.Infrastructure.Data
 {
     public class DatabaseSettings
     {

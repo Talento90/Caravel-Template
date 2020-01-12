@@ -3,8 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using CaravelTemplate.WebApi.Entities;
-using CaravelTemplate.WebApi.Infrastructure.Data;
+using CaravelTemplate.Infrastructure.Data;
 using CaravelTemplate.WebApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
@@ -34,8 +33,8 @@ namespace CaravelTemplate.WebApi.Tests.Unit.Services
         public async Task Get_AllDevices_Success()
         {
             // Arrange
-            _dbContext.Devices.Add(new Device {Id = 1});
-            _dbContext.Devices.Add(new Device {Id = 2});
+//            _dbContext.Devices.Add(new Entities.Device {Id = 1});
+//            _dbContext.Devices.Add(new Entities.Device {Id = 2});
 
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 

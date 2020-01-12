@@ -2,7 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace CaravelTemplate.WebApi.Infrastructure.Data
+namespace CaravelTemplate.Infrastructure.Data
 {
     public class CaravelTemplateDbContextFactory : IDesignTimeDbContextFactory<CaravelTemplateDbContext>
     {

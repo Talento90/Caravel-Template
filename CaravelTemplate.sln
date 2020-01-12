@@ -8,6 +8,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CEF340C6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.WebApi.Tests", "tests\CaravelTemplate.WebApi.Tests\CaravelTemplate.WebApi.Tests.csproj", "{64D3EF15-58AA-4CF7-8DA4-0F1179E7FDC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate", "src\CaravelTemplate\CaravelTemplate.csproj", "{BE3CC293-8C8C-4079-A23C-C124960D43FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Infrastructure", "src\CaravelTemplate.Infrastructure\CaravelTemplate.Infrastructure.csproj", "{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,9 +26,19 @@ Global
 		{64D3EF15-58AA-4CF7-8DA4-0F1179E7FDC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64D3EF15-58AA-4CF7-8DA4-0F1179E7FDC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64D3EF15-58AA-4CF7-8DA4-0F1179E7FDC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE3CC293-8C8C-4079-A23C-C124960D43FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE3CC293-8C8C-4079-A23C-C124960D43FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE3CC293-8C8C-4079-A23C-C124960D43FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE3CC293-8C8C-4079-A23C-C124960D43FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4C9C8C73-266E-49D1-870B-D76DCB6B81E4} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
 		{64D3EF15-58AA-4CF7-8DA4-0F1179E7FDC9} = {CEF340C6-0561-4386-848C-A030FF522B00}
+		{BE3CC293-8C8C-4079-A23C-C124960D43FD} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
+		{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
 	EndGlobalSection
 EndGlobal

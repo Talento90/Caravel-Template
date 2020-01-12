@@ -1,4 +1,4 @@
-using CaravelTemplate.WebApi.Infrastructure.Data;
+using CaravelTemplate.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

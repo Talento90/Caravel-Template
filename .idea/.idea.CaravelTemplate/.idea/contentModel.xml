@@ -13,6 +13,37 @@
       <e p="CaravelTemplate.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />
       <e p="src" t="Include">
+        <e p="CaravelTemplate" t="IncludeRecursive">
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="CaravelTemplate.csproj" t="IncludeRecursive" />
+          <e p="Device.cs" t="Include" />
+          <e p="obj" t="ExcludeRecursive">
+            <e p="Debug" t="Include">
+              <e p="netcoreapp3.1" t="Include">
+                <e p="CaravelTemplate.AssemblyInfo.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
+        <e p="CaravelTemplate.Infrastructure" t="IncludeRecursive">
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="CaravelTemplate.Infrastructure.csproj" t="IncludeRecursive" />
+          <e p="Data" t="Include">
+            <e p="Configurations" t="Include">
+              <e p="DeviceConfiguration.cs" t="Include" />
+            </e>
+            <e p="DatabaseSettings.cs" t="Include" />
+            <e p="GlueTemplateDbContext.cs" t="Include" />
+            <e p="GlueTemplateDbContextFactory.cs" t="Include" />
+          </e>
+          <e p="obj" t="ExcludeRecursive">
+            <e p="Debug" t="Include">
+              <e p="netcoreapp3.1" t="Include">
+                <e p="CaravelTemplate.Infrastructure.AssemblyInfo.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
         <e p="CaravelTemplate.WebApi" t="IncludeRecursive">
           <e p="appsettings.dev.json" t="Include" />
           <e p="appsettings.json" t="Include" />
@@ -21,9 +52,6 @@
           <e p="CaravelTemplate.WebApi.csproj" t="IncludeRecursive" />
           <e p="Controllers" t="Include">
             <e p="DevicesController.cs" t="Include" />
-          </e>
-          <e p="Entities" t="Include">
-            <e p="Device.cs" t="Include" />
           </e>
           <e p="Exceptions" t="Include">
             <e p="ErrorCodes.cs" t="Include" />
@@ -34,14 +62,6 @@
             <e p="SwaggerExtension.cs" t="Include" />
           </e>
           <e p="Infrastructure" t="Include">
-            <e p="Data" t="Include">
-              <e p="Configurations" t="Include">
-                <e p="DeviceConfiguration.cs" t="Include" />
-              </e>
-              <e p="DatabaseSettings.cs" t="Include" />
-              <e p="GlueTemplateDbContext.cs" t="Include" />
-              <e p="GlueTemplateDbContextFactory.cs" t="Include" />
-            </e>
             <e p="Logging" t="Include">
               <e p="RemovePropertiesEnricher.cs" t="Include" />
             </e>

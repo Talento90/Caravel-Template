@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using Caravel;
-using CaravelTemplate.WebApi.Infrastructure.Data;
+using CaravelTemplate.Infrastructure.Data;
 using CaravelTemplate.WebApi.Infrastructure.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

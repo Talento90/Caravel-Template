@@ -1,5 +1,4 @@
 using AutoMapper;
-using CaravelTemplate.WebApi.Entities;
 using CaravelTemplate.WebApi.Models.Devices;
 
 namespace CaravelTemplate.WebApi.Infrastructure.Mapper

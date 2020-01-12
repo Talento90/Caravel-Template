@@ -1,7 +1,6 @@
-﻿using CaravelTemplate.WebApi.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace CaravelTemplate.WebApi.Infrastructure.Data
+namespace CaravelTemplate.Infrastructure.Data
 {
     public class CaravelTemplateDbContext : DbContext
     {

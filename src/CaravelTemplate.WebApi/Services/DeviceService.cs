@@ -3,9 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Caravel.Exceptions;
-using CaravelTemplate.WebApi.Entities;
+using CaravelTemplate.Infrastructure.Data;
 using CaravelTemplate.WebApi.Exceptions;
-using CaravelTemplate.WebApi.Infrastructure.Data;
 using CaravelTemplate.WebApi.Models.Devices;
 using Microsoft.EntityFrameworkCore;
 
