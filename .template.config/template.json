@@ -1,0 +1,49 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Talento90",
+    "classifications": [
+      "WebAPI"
+    ],
+    "name": "Caravel Web Api",
+    "identity": "Caravel.WebApi",
+    "shortName": "caravel-webapi",
+    "tags": {
+      "language": "C#",
+      "type": "project"
+    },
+    "sourceName": "CaravelTemplate",
+    "preferNameDirectory": true,
+    "symbols": {
+      "includetest": {
+        "type": "parameter",
+        "datatype": "bool",
+        "defaultValue": "true"
+      }
+    },
+    "sources": [
+      {
+        "exclude": [
+          "**/[Bb]in/**",
+          "**/[Oo]bj/**",
+          ".template.config/**/*",
+          "**/*.filelist",
+          "**/*.user",
+          "**/*.lock.json",
+          ".idea/**/*",
+          "README.md"
+        ],
+        "modifiers": [
+          {
+            "condition": "(!includetest)",
+            "exclude": [
+              "tests/src/CaravelTemplate.WebApi.Test/**/*"
+            ]
+          }
+        ],
+        "rename": {
+          "template.gitignore": ".gitignore",
+          "template.launchSettings.json": "launchSettings.json"
+        }
+      }
+    ]
+  }
