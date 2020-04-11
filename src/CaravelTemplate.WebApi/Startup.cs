@@ -2,39 +2,40 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using AutoMapper;
 using FluentValidation.AspNetCore;
-using Caravel;
 using Caravel.AppContext;
 using Caravel.AspNetCore.Extensions;
 using Caravel.AspNetCore.Filters;
 using Caravel.AspNetCore.Http;
 using Caravel.AspNetCore.Middleware;
+using CaravelTemplate.Core.Behaviours;
+using CaravelTemplate.Core.Books.Queries;
 using CaravelTemplate.Infrastructure.Data;
 using CaravelTemplate.WebApi.Extensions;
-using CaravelTemplate.WebApi.Services;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace CaravelTemplate.WebApi
 {
     public class Startup
     {
+        private IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
-                .AddFluentValidation()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddMvcOptions(opt => { opt.Filters.Add(new ValidateModelFilter()); })
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(typeof(GetBookByIdQuery).Assembly))
                 .AddJsonOptions(opt =>
                 {
                     opt.JsonSerializerOptions.IgnoreNullValues = true;
@@ -43,18 +44,20 @@ namespace CaravelTemplate.WebApi
                     opt.JsonSerializerOptions.Converters.Add(new JsonDateTimeConverter());
                 });
 
-            services.ConfigureEntityFramework(Configuration);
-            services.ConfigureSwagger();
-            services.ConfigureAuthentication(Configuration);
-            services.AddRouting(r => r.LowercaseUrls = true);
             services.Configure<ApiBehaviorOptions>(opt => { opt.SuppressModelStateInvalidFilter = true; });
 
-            services.AddHttpContextAccessor();
-            services.AddAutoMapper(typeof(Startup).Assembly);
-            services.AddScoped<IAppContextAccessor, AppContextAccessor>();
+            services.ConfigureEntityFramework(Configuration);
+            services.ConfigureSwagger();
+            services.AddRouting(r => r.LowercaseUrls = true);
 
-            // Register Business Services
-            services.AddScoped<DeviceService>();
+            services.AddAutoMapper(typeof(GetBookByIdQuery).Assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+
+            services.AddMediatR(typeof(GetBookByIdQuery).Assembly);
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<IAppContextAccessor, AppContextAccessor>();
 
             services
                 .AddHealthChecks()
@@ -63,34 +66,27 @@ namespace CaravelTemplate.WebApi
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            
             app.UseHttpsRedirection();
-            
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseHealthChecks("/health");
+            app.UseAppVersion("/api/version");
+
             app.UseMiddleware<TraceIdMiddleware>();
             app.UseMiddleware<AppContextEnricherMiddleware>();
-            app.UseMiddleware<LoggingMiddleware>();
+            app.UseMiddleware<LoggingMiddleware>(Options.Create(new LoggingOptions
+            {
+                EnableLogBody = true
+            }));
             app.UseMiddleware<ExceptionMiddleware>();
-            
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapHealthChecks("/health");
-                endpoints.MapServiceVersion("/api/version");
-            });
 
-            if (!Env.IsDevelopmentEnvironment())
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/v1/swagger.json", "Caravel API"); });
-            }
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "CaravelTemplate API");
+            });
         }
     }
 }

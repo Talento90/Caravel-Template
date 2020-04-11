@@ -1,14 +1,11 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Caravel;
-using CaravelTemplate.Infrastructure.Data;
-using CaravelTemplate.WebApi.Infrastructure.Logging;
+using CaravelTemplate.Infrastructure.Logger;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Serilog.Sinks.Elasticsearch;
 
 namespace CaravelTemplate.WebApi
 {
@@ -23,45 +20,25 @@ namespace CaravelTemplate.WebApi
             .AddEnvironmentVariables()
             .Build();
 
-        public static int Main(string[] args)
+        private static IWebHostBuilder CreateWebHostBuilder() =>
+            new WebHostBuilder()
+                .UseKestrel(options => options.AddServerHeader = false)
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseConfiguration(Configuration)
+                .UseStartup<Startup>()
+                .UseSerilog();
+
+        public static async Task<int> Main(string[] args)
         {
-            var logConfig = new LoggerConfiguration()
-                .ReadFrom.Configuration(Configuration)
-                .Enrich.With(new RemovePropertiesEnricher())
-                .Enrich.FromLogContext()
-                .Enrich.WithProperty("app", "mobile-api")
-                .Enrich.WithProperty("version", Env.GetAppVersion())
-                .Enrich.WithProperty("env", Env.GetEnv());
-
-            logConfig.WriteTo.Elasticsearch(
-                new ElasticsearchSinkOptions(new Uri("https://logsene-receiver.eu.sematext.com"))
-                {
-                    IndexFormat = Environment.GetEnvironmentVariable("LOG_SYSLOG_TAG"),
-                    InlineFields = true,
-                    AutoRegisterTemplate = true
-                });
-
-            Log.Logger = logConfig.CreateLogger();
+            Log.Logger = LoggerFactory.CreateLogger(Configuration);
 
             try
             {
                 Log.Information("Starting Application");
-                
-                var host = CreateWebHostBuilder().Build();
-                
-                var dbSettings = Configuration.GetSection("Database").Get<DatabaseSettings>();
 
-                if (!dbSettings.IsInMemory)
-                {
-                    Log.Information("Applying Database Migration");
-
-                    using var scope = host.Services.CreateScope();
-                    var dbContext = scope.ServiceProvider.GetService<CaravelTemplateDbContext>();
-
-                    dbContext.Database.Migrate();
-                }
-
-                host.Run();
+                await CreateWebHostBuilder()
+                    .Build()
+                    .RunAsync();
                 
                 return 0;
             }
@@ -76,13 +53,5 @@ namespace CaravelTemplate.WebApi
                 Log.CloseAndFlush();
             }
         }
-        
-        private static IWebHostBuilder CreateWebHostBuilder() =>
-            new WebHostBuilder()
-                .UseKestrel(options => options.AddServerHeader = false)
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseConfiguration(Configuration)
-                .UseStartup<Startup>()
-                .UseSerilog();
     }
 }

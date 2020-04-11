@@ -9,12 +9,8 @@ COPY ./*.sln  ./
 COPY src/*/*.csproj ./
 RUN for file in $(ls *.csproj); do mkdir -p src/${file%.*}/ && mv $file src/${file%.*}/; done
 
-# Copy the test project files
-COPY tests/*/*.csproj ./
-RUN for file in $(ls *.csproj); do mkdir -p tests/${file%.*}/ && mv $file tests/${file%.*}/; done
-
 # Restore dependencies
-RUN dotnet restore --configfile NuGet.Config
+RUN dotnet restore
 
 # Copy everything else and build
 COPY . .

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>8</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CaravelTemplate.Infrastructure\CaravelTemplate.Infrastructure.csproj" />
+      <ProjectReference Include="..\CaravelTemplate\CaravelTemplate.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="9.0.0" />
+      <PackageReference Include="FluentValidation" Version="8.6.2" />
+      <PackageReference Include="MediatR" Version="8.0.1" />
+    </ItemGroup>
+
+</Project>

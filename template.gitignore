@@ -329,8 +329,5 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder
 .mfractor/
 
-# That's why her hair is so big - it's full of secrets
-secrets/
-
 # Prevent nuget.config to be pushed
 NuGet.Config

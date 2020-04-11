@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.4.0/build/netcoreapp2.1" t="Include">
+    <e p="$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.5.0/build/netcoreapp2.1" t="Include">
       <e p="Microsoft.NET.Test.Sdk.Program.cs" t="Include" />
     </e>
     <e p="$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.4.1/build/netcoreapp1.0/xunit.runner.reporters.netcoreapp10.dll" t="Include" />
     <e p="$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.4.1/build/netcoreapp1.0/xunit.runner.utility.netcoreapp10.dll" t="Include" />
     <e p="$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.4.1/build/netcoreapp1.0/xunit.runner.visualstudio.dotnetcore.testadapter.dll" t="Include" />
     <e p="$USER_HOME$/Library/Caches/Rider2019.2/extResources" t="IncludeRecursive" />
-    <e p="$USER_HOME$/Library/Caches/Rider2019.2/resharper-host/local/Transient/ReSharperHost/v192/SolutionCaches/_CaravelTemplate.-244819475.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2019.2/resharper-host/local/Transient/ReSharperHost/v192/SolutionCaches/_CaravelTemplate.1205100824.00" t="ExcludeRecursive" />
+    <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="CaravelTemplate.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />
@@ -16,7 +17,11 @@
         <e p="CaravelTemplate" t="IncludeRecursive">
           <e p="bin" t="ExcludeRecursive" />
           <e p="CaravelTemplate.csproj" t="IncludeRecursive" />
-          <e p="Device.cs" t="Include" />
+          <e p="Entities" t="Include">
+            <e p="Book.cs" t="Include" />
+            <e p="Entity.cs" t="Include" />
+          </e>
+          <e p="ErrorCodes.cs" t="Include" />
           <e p="obj" t="ExcludeRecursive">
             <e p="Debug" t="Include">
               <e p="netcoreapp3.1" t="Include">
@@ -25,16 +30,47 @@
             </e>
           </e>
         </e>
+        <e p="CaravelTemplate.Core" t="IncludeRecursive">
+          <e p="Behaviours" t="Include">
+            <e p="PerformanceRequestBehaviour.cs" t="Include" />
+            <e p="RequestValidationBehavior.cs" t="Include" />
+          </e>
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="Books" t="Include">
+            <e p="BookModel.cs" t="Include" />
+            <e p="BooksMapper.cs" t="Include" />
+            <e p="Commands" t="Include">
+              <e p="CreateBookCommand.cs" t="Include" />
+              <e p="DeleteBookCommand.cs" t="Include" />
+              <e p="UpdateBookCommand.cs" t="Include" />
+            </e>
+            <e p="Queries" t="Include">
+              <e p="GetBookByIdQuery.cs" t="Include" />
+            </e>
+          </e>
+          <e p="CaravelTemplate.Core.csproj" t="IncludeRecursive" />
+          <e p="obj" t="ExcludeRecursive">
+            <e p="Debug" t="Include">
+              <e p="netcoreapp3.1" t="Include">
+                <e p="CaravelTemplate.Core.AssemblyInfo.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Result.cs" t="Include" />
+        </e>
         <e p="CaravelTemplate.Infrastructure" t="IncludeRecursive">
           <e p="bin" t="ExcludeRecursive" />
           <e p="CaravelTemplate.Infrastructure.csproj" t="IncludeRecursive" />
           <e p="Data" t="Include">
+            <e p="CaravelTemplateDbContext.cs" t="Include" />
+            <e p="CaravelTemplateDbContextFactory.cs" t="Include" />
             <e p="Configurations" t="Include">
-              <e p="DeviceConfiguration.cs" t="Include" />
+              <e p="BookConfiguration.cs" t="Include" />
             </e>
             <e p="DatabaseSettings.cs" t="Include" />
-            <e p="GlueTemplateDbContext.cs" t="Include" />
-            <e p="GlueTemplateDbContextFactory.cs" t="Include" />
+          </e>
+          <e p="Logger" t="Include">
+            <e p="LoggerFactory.cs" t="Include" />
           </e>
           <e p="obj" t="ExcludeRecursive">
             <e p="Debug" t="Include">
@@ -51,29 +87,11 @@
           <e p="bin" t="ExcludeRecursive" />
           <e p="CaravelTemplate.WebApi.csproj" t="IncludeRecursive" />
           <e p="Controllers" t="Include">
-            <e p="DevicesController.cs" t="Include" />
-          </e>
-          <e p="Exceptions" t="Include">
-            <e p="ErrorCodes.cs" t="Include" />
+            <e p="BooksController.cs" t="Include" />
           </e>
           <e p="Extensions" t="Include">
-            <e p="AuthenticationExtensions.cs" t="Include" />
             <e p="EntityFrameworkExtension.cs" t="Include" />
             <e p="SwaggerExtension.cs" t="Include" />
-          </e>
-          <e p="Infrastructure" t="Include">
-            <e p="Logging" t="Include">
-              <e p="RemovePropertiesEnricher.cs" t="Include" />
-            </e>
-            <e p="Mapper" t="Include">
-              <e p="DeviceProfile.cs" t="Include" />
-            </e>
-          </e>
-          <e p="Models" t="Include">
-            <e p="Devices" t="Include">
-              <e p="CreateDeviceModel.cs" t="Include" />
-              <e p="DeviceModel.cs" t="Include" />
-            </e>
           </e>
           <e p="obj" t="ExcludeRecursive">
             <e p="Debug" t="Include">
@@ -84,10 +102,8 @@
           </e>
           <e p="Program.cs" t="Include" />
           <e p="Properties" t="Include">
+            <e p="launchSettings.json" t="Include" />
             <e p="template.launchSettings.json" t="Include" />
-          </e>
-          <e p="Services" t="Include">
-            <e p="DeviceService.cs" t="Include" />
           </e>
           <e p="Startup.cs" t="Include" />
         </e>
@@ -97,22 +113,23 @@
           <e p="appsettings.json" t="Include" />
           <e p="bin" t="ExcludeRecursive" />
           <e p="CaravelTemplate.WebApi.Tests.csproj" t="IncludeRecursive" />
+          <e p="FakeData.cs" t="Include" />
           <e p="Fixtures" t="Include">
             <e p="ServerFixture.cs" t="Include" />
           </e>
           <e p="Integration" t="Include">
-            <e p="DevicesControllerTests.cs" t="Include" />
+            <e p="BooksControllerTests" t="Include">
+              <e p="CreateBookTests.cs" t="Include" />
+              <e p="DeleteBookTests.cs" t="Include" />
+              <e p="GetBookTests.cs" t="Include" />
+              <e p="UpdateBookTests.cs" t="Include" />
+            </e>
           </e>
           <e p="obj" t="ExcludeRecursive">
             <e p="Debug" t="Include">
               <e p="netcoreapp3.1" t="Include">
                 <e p="CaravelTemplate.WebApi.Tests.AssemblyInfo.cs" t="Include" />
               </e>
-            </e>
-          </e>
-          <e p="Unit" t="Include">
-            <e p="Services" t="Include">
-              <e p="DevicesServiceTests.cs" t="Include" />
             </e>
           </e>
           <e p="xunit.runner.json" t="Include" />
