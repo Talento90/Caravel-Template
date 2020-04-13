@@ -10,9 +10,11 @@ using CaravelTemplate.Entities;
 using CaravelTemplate.WebApi.Tests.Fixtures;
 using FluentAssertions;
 using Xunit;
+using Xunit.Sdk;
 
 namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
 {
+    [Collection("Integration")]
     public class GetBookTests : IDisposable
     {
         private const string ApiUrl = "/api/v1/books";
@@ -41,7 +43,9 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
             
             var bookModel = await response.Content.ReadAsJsonAsync<BookModel>();
 
-            bookModel.Should().BeEquivalentTo(book);
+            bookModel.Id.Should().Be(book.Id);
+            bookModel.Name.Should().Be(book.Name);
+            bookModel.Description.Should().Be(book.Description);
         }
         
         [Fact]

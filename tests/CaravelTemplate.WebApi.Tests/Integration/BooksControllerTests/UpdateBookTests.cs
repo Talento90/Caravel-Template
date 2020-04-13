@@ -13,6 +13,7 @@ using Xunit;
 
 namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
 {
+    [Collection("Integration")]
     public class UpdateBookTests : IDisposable
     {
         private const string ApiUrl = "/api/v1/books";
@@ -42,7 +43,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
             var response = await client.PutJsonAsync($"{ApiUrl}/{book.Id}", updateBook);
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             
             var bookModel = await response.Content.ReadAsJsonAsync<BookModel>();
 

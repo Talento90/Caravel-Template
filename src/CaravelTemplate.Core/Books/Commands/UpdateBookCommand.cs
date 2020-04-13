@@ -9,7 +9,7 @@ using MediatR;
 
 namespace CaravelTemplate.Core.Books.Commands
 {
-    public class UpdateBookCommand : IRequest<Result<bool>>
+    public class UpdateBookCommand : IRequest<Result<BookModel>>
     {
         private Guid Id { get; set; }
         public string? Name { get; set; }
@@ -30,7 +30,7 @@ namespace CaravelTemplate.Core.Books.Commands
             }
         }
         
-        public class Handler : IRequestHandler<UpdateBookCommand, Result<bool>>
+        public class Handler : IRequestHandler<UpdateBookCommand, Result<BookModel>>
         {
             private readonly CaravelTemplateDbContext _dbContext;
             private readonly IMapper _mapper;
@@ -41,13 +41,13 @@ namespace CaravelTemplate.Core.Books.Commands
                 _mapper = mapper;
             }
             
-            public async Task<Result<bool>> Handle(UpdateBookCommand request, CancellationToken ct)
+            public async Task<Result<BookModel>> Handle(UpdateBookCommand request, CancellationToken ct)
             {
                 var book = await _dbContext.Books.FindAsync(request.Id);
 
                 if (book == null)
                 {
-                    return Result<bool>.Create(new NotFoundException(
+                    return Result<BookModel>.Create(new NotFoundException(
                         ErrorCodes.BookNotFound,
                         $"Book {request.Id} does not exist")
                     );
@@ -58,7 +58,7 @@ namespace CaravelTemplate.Core.Books.Commands
 
                 await _dbContext.SaveChangesAsync(ct);
 
-                return Result<bool>.Create(true);
+                return Result<BookModel>.Create(_mapper.Map<BookModel>(book));
             }
         }
     }

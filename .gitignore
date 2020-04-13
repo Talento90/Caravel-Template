@@ -352,3 +352,4 @@ MigrationBackup/
 # Ignore Rider files
 .idea/
 .idea/.idea.CaravelTemplate
+data

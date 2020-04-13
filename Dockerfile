@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS builder
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1.101 AS builder
 
 WORKDIR /app
 
@@ -10,13 +10,14 @@ COPY src/*/*.csproj ./
 RUN for file in $(ls *.csproj); do mkdir -p src/${file%.*}/ && mv $file src/${file%.*}/; done
 
 # Restore dependencies
-RUN dotnet restore
+RUN dotnet restore src/CaravelTemplate.WebApi
 
 # Copy everything else and build
 COPY . .
 
 # Publish application in Release
 WORKDIR /app/src/CaravelTemplate.WebApi
+
 RUN dotnet publish -c Release -o dist
 
 # Build runtime image

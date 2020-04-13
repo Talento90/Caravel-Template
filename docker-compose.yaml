@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+ caravel-template-api:
+   build: .
+   ports:
+     - "5000:80"
+     - "5001:443"
+   environment:
+     #ASPNETCORE_URLS: "https://+443;http://+80"
+     #ASPNETCORE_HTTPS_PORT: 5001
+     #ASPNETCORE_Kestrel__Certificates__Default__Path: "/root/.dotnet/https/dev-localhost.pfx"
+     #ASPNETCORE_Kestrel__Certificates__Default__Password: "password123"
+     ASPNETCORE_ENVIRONMENT: Development
+     DATABASE__CONNECTION_STRING: "User ID=caravel;Password=password123;Server=postgres-db;Port=5432;Database=caravel_db;SSL Mode=Require;Trust Server Certificate=true"
+   volumes:
+     - ./certificates:/root/.dotnet/https
+   networks:
+     - backend
+   depends_on:
+     - postgres-db
+
+ postgres-db:
+   image: postgres:11
+   restart: always
+   environment:
+     POSTGRES_DB: caravel
+     POSTGRES_USER: user
+     POSTGRES_PASSWORD: password123
+   ports:
+     - 5432:5432
+   volumes:
+     - ./data/postgres:/var/lib/postgresql/data
+   networks:
+     - backend
+
+networks:
+  backend:

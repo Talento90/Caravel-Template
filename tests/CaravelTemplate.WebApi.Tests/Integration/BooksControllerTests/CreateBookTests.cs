@@ -11,6 +11,7 @@ using Xunit;
 
 namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
 {
+    [Collection("Integration")]
     public class CreateBookTests : IDisposable
     {
         private const string ApiUrl = "/api/v1/books";

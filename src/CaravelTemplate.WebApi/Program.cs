@@ -15,7 +15,7 @@ namespace CaravelTemplate.WebApi
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddJsonFile(
-                $"appsettings.{Env.GetEnv()}.json",
+                $"appsettings.{Env.GetEnv().ToLower()}.json",
                 optional: true)
             .AddEnvironmentVariables()
             .Build();
