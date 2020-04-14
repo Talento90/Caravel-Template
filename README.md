@@ -32,7 +32,7 @@ dotnet new --install ~/caravel-template
 
 #### Generate Project
 ```bash
-dotnet new gluetemplate-webapi -n MyProject -o ./
+dotnet new caravel-webapi -n MyProject -o ./
 ```
 Note: `MyProject` is  going to replace the `CaravelTemplate`  
 
