@@ -1,4 +1,6 @@
 using CaravelTemplate.Infrastructure.Data;
+using CaravelTemplate.Infrastructure.Data.Repositories;
+using CaravelTemplate.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,8 @@ namespace CaravelTemplate.WebApi.Extensions
                     options.UseNpgsql(dbConfig.ConnectionString);
                 }
             });
+
+            services.AddScoped<IBookRepository, BookRepository>();
         }
     }
 }

@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using CaravelTemplate.Entities;
+using CaravelTemplate.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CaravelTemplate.Infrastructure.Data
 {
-    public class CaravelTemplateDbContext : DbContext
+    public class CaravelTemplateDbContext : DbContext, IUnitOfWork
     {
+        public const string DefaultSchema = "CaravelTemplate";
+
         public DbSet<Book> Books { get; set; } = null!;
 
         public CaravelTemplateDbContext(DbContextOptions<CaravelTemplateDbContext> options) : base(options)
@@ -49,14 +54,14 @@ namespace CaravelTemplate.Infrastructure.Data
                 }
             }
         }
-        
-        public override int SaveChanges()
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             var entries = ChangeTracker
                 .Entries()
                 .Where(e => e.Entity is Entity && (
-                                e.State == EntityState.Added
-                                || e.State == EntityState.Modified));
+                    e.State == EntityState.Added
+                    || e.State == EntityState.Modified));
 
             foreach (var entityEntry in entries)
             {
@@ -68,7 +73,7 @@ namespace CaravelTemplate.Infrastructure.Data
                 }
             }
 
-            return base.SaveChanges();
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

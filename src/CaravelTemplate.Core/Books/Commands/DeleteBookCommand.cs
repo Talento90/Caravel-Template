@@ -1,11 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using Caravel.Errors;
-using Caravel.Exceptions;
-using CaravelTemplate.Entities;
-using CaravelTemplate.Infrastructure.Data;
+using CaravelTemplate.Repositories;
 using FluentValidation;
 using MediatR;
 
@@ -25,16 +22,16 @@ namespace CaravelTemplate.Core.Books.Commands
 
         public class Handler : IRequestHandler<DeleteBookCommand, DeleteBookCommandResponse>
         {
-            private readonly CaravelTemplateDbContext _dbContext;
+            private readonly IBookRepository _bookRepository;
 
-            public Handler(CaravelTemplateDbContext dbContext)
+            public Handler(IBookRepository bookRepository)
             {
-                _dbContext = dbContext;
+                _bookRepository = bookRepository;
             }
 
             public async Task<DeleteBookCommandResponse> Handle(DeleteBookCommand request, CancellationToken ct)
             {
-                var book = await _dbContext.Books.FindAsync(request.Id);
+                var book = await _bookRepository.GetAsync(request.Id, ct);
 
                 if (book == null)
                 {
@@ -42,9 +39,9 @@ namespace CaravelTemplate.Core.Books.Commands
                         new Error(Errors.BookNotFound, $"Book {request.Id} does not exist"));
                 }
 
-                _dbContext.Books.Remove(book);
+                _bookRepository.DeleteAsync(book);
 
-                await _dbContext.SaveChangesAsync(ct);
+                await _bookRepository.UnitOfWork.SaveChangesAsync(ct);
 
                 return new DeleteBookCommandResponse.Success();
             }
