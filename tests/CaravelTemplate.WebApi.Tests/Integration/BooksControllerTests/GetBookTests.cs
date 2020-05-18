@@ -4,6 +4,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Http;
 using Caravel.Exceptions;
+using Caravel.Http;
+using CaravelTemplate.Core;
 using CaravelTemplate.Core.Books;
 using CaravelTemplate.Core.Books.Commands;
 using CaravelTemplate.Entities;
@@ -62,8 +64,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
 
             var error = await response.Content.ReadAsJsonAsync<HttpError>();
 
-            error.Code.Should().Be(ErrorCodes.BookNotFound.Code);
-            error.Title.Should().Be(ErrorCodes.BookNotFound.Message);
+            error.Code.Should().Be(Errors.BookNotFound);
         }
 
         public void Dispose()

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Caravel.Errors;
 using Caravel.Exceptions;
 using FluentValidation;
 using MediatR;
@@ -33,7 +34,8 @@ namespace CaravelTemplate.Core.Behaviours
             
             if (errors.Any())
             {
-                throw new ValidationException(Errors.FieldsValidation, errors);
+                //TODO: WIP
+                throw new ValidationException(new Error(Errors.InvalidFields, "Invalid fields."), errors);
             }
 
             return next();

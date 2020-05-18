@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Caravel.Errors;
 using Caravel.Exceptions;
 using CaravelTemplate.Entities;
 using CaravelTemplate.Infrastructure.Data;
@@ -10,7 +11,7 @@ using MediatR;
 
 namespace CaravelTemplate.Core.Books.Commands
 {
-    public class DeleteBookCommand : IRequest<Result<bool>>
+    public class DeleteBookCommand : IRequest<DeleteBookCommandResponse>
     {
         public Guid Id { get; set; }
 
@@ -22,7 +23,7 @@ namespace CaravelTemplate.Core.Books.Commands
             }
         }
 
-        public class Handler : IRequestHandler<DeleteBookCommand, Result<bool>>
+        public class Handler : IRequestHandler<DeleteBookCommand, DeleteBookCommandResponse>
         {
             private readonly CaravelTemplateDbContext _dbContext;
 
@@ -31,23 +32,21 @@ namespace CaravelTemplate.Core.Books.Commands
                 _dbContext = dbContext;
             }
 
-            public async Task<Result<bool>> Handle(DeleteBookCommand request, CancellationToken ct)
+            public async Task<DeleteBookCommandResponse> Handle(DeleteBookCommand request, CancellationToken ct)
             {
                 var book = await _dbContext.Books.FindAsync(request.Id);
 
                 if (book == null)
                 {
-                    return Result<bool>.Create(new NotFoundException(
-                        ErrorCodes.BookNotFound,
-                        $"Book {request.Id} does not exist")
-                    );
+                    return new DeleteBookCommandResponse.NotFound(
+                        new Error(Errors.BookNotFound, $"Book {request.Id} does not exist"));
                 }
 
                 _dbContext.Books.Remove(book);
 
                 await _dbContext.SaveChangesAsync(ct);
 
-                return Result<bool>.Create(true);
+                return new DeleteBookCommandResponse.Success();
             }
         }
     }

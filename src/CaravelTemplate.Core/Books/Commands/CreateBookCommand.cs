@@ -9,7 +9,7 @@ using MediatR;
 
 namespace CaravelTemplate.Core.Books.Commands
 {
-    public class CreateBookCommand : IRequest<Result<BookModel>>
+    public class CreateBookCommand : IRequest<CreateBookCommandResponse>
     {
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
@@ -25,7 +25,7 @@ namespace CaravelTemplate.Core.Books.Commands
             }
         }
         
-        public class Handler : IRequestHandler<CreateBookCommand, Result<BookModel>>
+        public class Handler : IRequestHandler<CreateBookCommand, CreateBookCommandResponse>
         {
             private readonly CaravelTemplateDbContext _dbContext;
             private readonly IMapper _mapper;
@@ -36,15 +36,15 @@ namespace CaravelTemplate.Core.Books.Commands
                 _mapper = mapper;
             }
             
-            public async Task<Result<BookModel>> Handle(CreateBookCommand request, CancellationToken ct)
+            public async Task<CreateBookCommandResponse> Handle(CreateBookCommand request, CancellationToken ct)
             {
                 var book = _mapper.Map<Book>(request);
 
-                _dbContext.Books.Add(book);
+                await _dbContext.Books.AddAsync(book, ct);
 
                 await _dbContext.SaveChangesAsync(ct);
                 
-                return Result<BookModel>.Create(_mapper.Map<BookModel>(book));
+                return new CreateBookCommandResponse.Success(_mapper.Map<BookModel>(book));
             }
         }
     }

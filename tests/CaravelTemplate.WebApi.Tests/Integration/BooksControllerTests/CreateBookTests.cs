@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Http;
 using Caravel.Exceptions;
+using Caravel.Http;
 using CaravelTemplate.Core.Books;
 using CaravelTemplate.Core.Books.Commands;
 using CaravelTemplate.WebApi.Tests.Fixtures;
@@ -63,8 +64,8 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
 
             var error = await response.Content.ReadAsJsonAsync<HttpError>();
 
-            error.Code.Should().Be(Errors.FieldsValidation.Code);
-            error.Title.Should().Be(Errors.FieldsValidation.Message);
+            error.Code.Should().Be("validation_fields");
+            error.Title.Should().Be("Invalid fields.");
         }
 
         public void Dispose()

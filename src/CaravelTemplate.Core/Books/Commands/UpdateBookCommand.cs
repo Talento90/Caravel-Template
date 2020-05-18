@@ -2,14 +2,14 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Caravel.Exceptions;
+using Caravel.Errors;
 using CaravelTemplate.Infrastructure.Data;
 using FluentValidation;
 using MediatR;
 
 namespace CaravelTemplate.Core.Books.Commands
 {
-    public class UpdateBookCommand : IRequest<Result<BookModel>>
+    public class UpdateBookCommand : IRequest<UpdateBookCommandResponse>
     {
         private Guid Id { get; set; }
         public string? Name { get; set; }
@@ -30,7 +30,7 @@ namespace CaravelTemplate.Core.Books.Commands
             }
         }
         
-        public class Handler : IRequestHandler<UpdateBookCommand, Result<BookModel>>
+        public class Handler : IRequestHandler<UpdateBookCommand, UpdateBookCommandResponse>
         {
             private readonly CaravelTemplateDbContext _dbContext;
             private readonly IMapper _mapper;
@@ -41,15 +41,14 @@ namespace CaravelTemplate.Core.Books.Commands
                 _mapper = mapper;
             }
             
-            public async Task<Result<BookModel>> Handle(UpdateBookCommand request, CancellationToken ct)
+            public async Task<UpdateBookCommandResponse> Handle(UpdateBookCommand request, CancellationToken ct)
             {
                 var book = await _dbContext.Books.FindAsync(request.Id);
 
                 if (book == null)
                 {
-                    return Result<BookModel>.Create(new NotFoundException(
-                        ErrorCodes.BookNotFound,
-                        $"Book {request.Id} does not exist")
+                    return new UpdateBookCommandResponse.NotFound(
+                        new Error(Errors.BookNotFound, $"Book {request.Id} does not exist")
                     );
                 }
 
@@ -58,7 +57,8 @@ namespace CaravelTemplate.Core.Books.Commands
 
                 await _dbContext.SaveChangesAsync(ct);
 
-                return Result<BookModel>.Create(_mapper.Map<BookModel>(book));
+                return new UpdateBookCommandResponse.Success(
+                    _mapper.Map<BookModel>(book));
             }
         }
     }

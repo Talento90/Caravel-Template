@@ -1,9 +1,7 @@
 using System;
-using System.Linq;
 using CaravelTemplate.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,12 +16,11 @@ namespace CaravelTemplate.WebApi.Tests.Fixtures
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.test.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
 
             var builder = new WebHostBuilder()
-                .UseEnvironment("local")
                 .UseConfiguration(configuration)
                 .UseStartup<Startup>();
                 

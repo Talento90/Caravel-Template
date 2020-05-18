@@ -3,22 +3,18 @@ using System.Text.Json.Serialization;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Caravel.AppContext;
-using Caravel.AspNetCore.Extensions;
-using Caravel.AspNetCore.Filters;
-using Caravel.AspNetCore.Http;
 using Caravel.AspNetCore.Middleware;
+using Caravel.Http;
 using CaravelTemplate.Core.Behaviours;
 using CaravelTemplate.Core.Books.Queries;
 using CaravelTemplate.Infrastructure.Data;
 using CaravelTemplate.WebApi.Extensions;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace CaravelTemplate.WebApi
