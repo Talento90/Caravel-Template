@@ -8,8 +8,6 @@ namespace CaravelTemplate.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Book> builder)
         {
-            builder.ToTable("books", CaravelTemplateDbContext.DefaultSchema);
-
             builder.HasKey(p => p.Id);
             
             builder.Property(p => p.Id).IsRequired();

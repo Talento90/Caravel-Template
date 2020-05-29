@@ -23,9 +23,27 @@ namespace CaravelTemplate.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CaravelTemplateDbContext).Assembly);
+            modelBuilder.HasDefaultSchema(DefaultSchema);
 
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CaravelTemplateDbContext).Assembly);
             
+            ApplyUtcDateConverter(modelBuilder);
+        }
+
+        public override int SaveChanges()
+        {
+            AuditEntities();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            AuditEntities();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private static void ApplyUtcDateConverter(ModelBuilder modelBuilder)
+        {
             var utcDateTimeConverter = new ValueConverter<DateTime, DateTime>(
                 d => d,
                 d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
@@ -55,7 +73,8 @@ namespace CaravelTemplate.Infrastructure.Data
             }
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+
+        private void AuditEntities()
         {
             var entries = ChangeTracker
                 .Entries()
@@ -72,8 +91,6 @@ namespace CaravelTemplate.Infrastructure.Data
                     ((Entity)entityEntry.Entity).CreatedAtUtc = DateTime.UtcNow;
                 }
             }
-
-            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

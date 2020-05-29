@@ -7,10 +7,10 @@ namespace CaravelTemplate.WebApi.Controllers
 {
     public class BaseController : ControllerBase
     {
-        public ActionResult NotFound(Error error)
+        protected ActionResult NotFound(Error error)
             => NotFound(new HttpError(HttpContext, HttpStatusCode.NotFound, error));
         
-        public ActionResult BadRequest(Error error)
+        protected ActionResult BadRequest(Error error)
             => BadRequest(new HttpError(HttpContext, HttpStatusCode.BadRequest, error));
     }
 }
