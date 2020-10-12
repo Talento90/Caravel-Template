@@ -3,9 +3,11 @@ using System.Text.Json.Serialization;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Caravel.AppContext;
+using Caravel.AspNetCore.Authentication;
 using Caravel.AspNetCore.Middleware;
+using Caravel.Clock;
 using Caravel.Http;
-using CaravelTemplate.Core.Behaviours;
+using Caravel.MediatR.Behaviours;
 using CaravelTemplate.Core.Books.Queries;
 using CaravelTemplate.Infrastructure.Data;
 using CaravelTemplate.WebApi.Extensions;
@@ -43,17 +45,22 @@ namespace CaravelTemplate.WebApi
             services.Configure<ApiBehaviorOptions>(opt => { opt.SuppressModelStateInvalidFilter = true; });
 
             services.ConfigureEntityFramework(Configuration);
+            services.ConfigureAuthentication(Configuration);
             services.ConfigureSwagger();
             services.AddRouting(r => r.LowercaseUrls = true);
 
             services.AddAutoMapper(typeof(GetBookByIdQuery).Assembly);
+
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-
+            services.AddAuthorizeFromAssembly(typeof(GetBookByIdQuery).Assembly);
             services.AddMediatR(typeof(GetBookByIdQuery).Assembly);
 
             services.AddHttpContextAccessor();
+            services.AddScoped<IClock, DateTimeClock>();
             services.AddScoped<IAppContextAccessor, AppContextAccessor>();
+            services.AddScoped<ITokenFactory, TokenFactory>();
+            services.AddScoped<IJwtManager, JwtManager>();
 
             services
                 .AddHealthChecks()
@@ -68,9 +75,12 @@ namespace CaravelTemplate.WebApi
             app.UseHealthChecks("/health");
             app.UseAppVersion("/api/version");
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseMiddleware<TraceIdMiddleware>();
             app.UseMiddleware<AppContextEnricherMiddleware>();
-            app.UseMiddleware<LoggingMiddleware>(Options.Create(new LoggingOptions
+            app.UseMiddleware<LoggingMiddleware>(Options.Create(new LoggingSettings()
             {
                 EnableLogBody = true
             }));

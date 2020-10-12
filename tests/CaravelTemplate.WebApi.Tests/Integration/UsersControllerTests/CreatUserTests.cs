@@ -2,62 +2,67 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Http;
-using Caravel.Exceptions;
 using Caravel.Http;
-using CaravelTemplate.Core.Books;
-using CaravelTemplate.Core.Books.Commands;
+using CaravelTemplate.Core.Users;
+using CaravelTemplate.Core.Users.Commands;
 using CaravelTemplate.WebApi.Tests.Fixtures;
 using FluentAssertions;
 using Xunit;
 
-namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
+namespace CaravelTemplate.WebApi.Tests.Integration.UsersControllerTests
 {
     [Collection("Integration")]
-    public class CreateBookTests : IDisposable
+    public class CreateUserTests : IDisposable
     {
-        private const string ApiUrl = "/api/v1/books";
+        private const string ApiUrl = "/api/v1/users";
         private readonly ServerFixture _fixture;
 
-        public CreateBookTests()
+        public CreateUserTests()
         {
             _fixture = new ServerFixture();
         }
         
         [Fact]
-        public async Task Create_Book_Created()
+        public async Task Create_User_Created()
         {
             // Arrange
             var client = _fixture.Server.CreateClient();
-            var createBook = new CreateBookCommand
+            var createUser = new CreateUserCommand()
             {
-                Name = "Caravel Book",
-                Description = "Book about Caravel package"
+                Email = "test@caravel.com",
+                Username = "caravel",
+                Password = "!Caravel123",
+                ConfirmPassword = "!Caravel123",
+                FirstName = "Cara",
+                LastName = "Vel"
             };
 
             // Act
-            var response = await client.PostJsonAsync(ApiUrl, createBook);
+            var response = await client.PostJsonAsync(ApiUrl, createUser);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Created);
             
-            var book = await response.Content.ReadAsJsonAsync<BookModel>();
+            var user = await response.Content.ReadAsJsonAsync<UserModel>();
 
-            book.Name.Should().Be(createBook.Name);
-            book.Description.Should().Be(createBook.Description);
+            user.Email.Should().Be(createUser.Email);
         }
         
         [Fact]
-        public async Task Create_Book_Missing_Name_Bad_Request()
+        public async Task Create_User_Missing_Email_Bad_Request()
         {
             // Arrange
             var client = _fixture.Server.CreateClient();
-            var createBook = new CreateBookCommand
+            var createUser = new CreateUserCommand()
             {
-                Description = "Book without a name"
+                Username = "caravel",
+                Password = "caravel123",
+                FirstName = "Cara",
+                LastName = "Vel"
             };
 
             // Act
-            var response = await client.PostJsonAsync(ApiUrl, createBook);
+            var response = await client.PostJsonAsync(ApiUrl, createUser);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

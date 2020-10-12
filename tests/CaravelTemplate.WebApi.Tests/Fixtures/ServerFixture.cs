@@ -1,9 +1,13 @@
 using System;
 using CaravelTemplate.Infrastructure.Data;
+using CaravelTemplate.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CaravelTemplate.WebApi.Tests.Fixtures
 {
@@ -23,11 +27,14 @@ namespace CaravelTemplate.WebApi.Tests.Fixtures
             var builder = new WebHostBuilder()
                 .UseConfiguration(configuration)
                 .UseStartup<Startup>();
-                
-            
+
             Server = new TestServer(builder);
+            
+            configuration["Jwt:Audience"] = Server.BaseAddress.ToString();
+            
+            RoleSeeder.CreateRolesAsync(Server.Services.GetService<RoleManager<Role>>());
         }
-        
+
         public void SeedDatabase(params object[] entities)
         {
             DbContext.AddRange(entities);

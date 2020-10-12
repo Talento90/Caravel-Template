@@ -25,7 +25,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
         
         public GetBookTests()
         {
-            _books = FakeData.BookFaker.Generate(1).ToArray();
+            _books = FakeData.BookFaker().Generate(1).ToArray();
             _fixture = new ServerFixture();
             _fixture.SeedDatabase(_books);
         }

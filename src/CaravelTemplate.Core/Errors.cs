@@ -2,7 +2,10 @@ namespace CaravelTemplate.Core
 {
     public class Errors
     {
-        public const string InvalidFields = "validation_fields";
+        public const string InvalidFields = "invalid_fields";
         public const string BookNotFound = "book_not_found";
+        public const string UserNotFound = "user_not_found";
+        public const string UserCreation = "user_creation";
+        public const string MatchPassword = "match_password";
     }
 }

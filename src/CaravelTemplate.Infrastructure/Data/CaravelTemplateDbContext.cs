@@ -2,21 +2,30 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Caravel.AppContext;
+using Caravel.Entities;
 using CaravelTemplate.Entities;
-using CaravelTemplate.Repositories;
+using CaravelTemplate.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CaravelTemplate.Infrastructure.Data
 {
-    public class CaravelTemplateDbContext : DbContext, IUnitOfWork
+    public class CaravelTemplateDbContext : IdentityDbContext<User, Role, Guid>
     {
         public const string DefaultSchema = "CaravelTemplate";
 
+        private readonly IAppContextAccessor _contextAccessor;
         public DbSet<Book> Books { get; set; } = null!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
-        public CaravelTemplateDbContext(DbContextOptions<CaravelTemplateDbContext> options) : base(options)
+        public CaravelTemplateDbContext(
+            DbContextOptions<CaravelTemplateDbContext> options,
+            IAppContextAccessor appContextAccessor
+            ) : base(options)
         {
+            _contextAccessor = appContextAccessor;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,9 +35,11 @@ namespace CaravelTemplate.Infrastructure.Data
             modelBuilder.HasDefaultSchema(DefaultSchema);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CaravelTemplateDbContext).Assembly);
-            
+
+            NormalizeTableNames(modelBuilder);
             ApplyUtcDateConverter(modelBuilder);
         }
+        
 
         public override int SaveChanges()
         {
@@ -73,22 +84,62 @@ namespace CaravelTemplate.Infrastructure.Data
             }
         }
 
-
         private void AuditEntities()
         {
+            var userId = _contextAccessor.Context.UserId;
+            
+            
             var entries = ChangeTracker
                 .Entries()
-                .Where(e => e.Entity is Entity && (
+                .Where(e => e.Entity is IAuditable && (
                     e.State == EntityState.Added
-                    || e.State == EntityState.Modified));
+                    || e.State == EntityState.Modified
+                    || e.State == EntityState.Deleted));
 
             foreach (var entityEntry in entries)
             {
-                ((Entity)entityEntry.Entity).UpdatedAtUtc = DateTime.UtcNow;
+                IEntity entity = (IEntity) entityEntry.Entity;
 
-                if (entityEntry.State == EntityState.Added)
+                if (entity != null)
                 {
-                    ((Entity)entityEntry.Entity).CreatedAtUtc = DateTime.UtcNow;
+                    switch (entityEntry.State)
+                    {
+                        case EntityState.Added:
+                        {
+                            entity.Created = DateTime.UtcNow;
+                    
+                            if (userId.HasValue)
+                            {
+                                entity.CreatedBy = userId.Value;
+                            }
+
+                            break;
+                        }
+                        case EntityState.Modified:
+                        case EntityState.Deleted:
+                        {
+                            entity.Updated = DateTime.UtcNow;
+                
+                            if (userId.HasValue)
+                            {
+                                entity.UpdatedBy = userId.Value;
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        
+        private static void NormalizeTableNames(ModelBuilder modelBuilder)
+        {
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var tableName = entityType.GetTableName();
+                if (tableName.StartsWith("AspNet"))
+                {
+                    entityType.SetTableName(tableName.Substring(6));
                 }
             }
         }

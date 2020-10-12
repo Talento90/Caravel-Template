@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Caravel.Errors;
-using CaravelTemplate.Repositories;
+using CaravelTemplate.Infrastructure.Data;
 using FluentValidation;
 using MediatR;
 
@@ -23,18 +23,18 @@ namespace CaravelTemplate.Core.Books.Queries
 
         public class Handler : IRequestHandler<GetBookByIdQuery, GetBookByIdQueryResponse>
         {
-            private readonly IBookRepository _bookRepository;
+            private readonly CaravelTemplateDbContext _dbContext;
             private readonly IMapper _mapper;
 
-            public Handler(IBookRepository bookRepository, IMapper mapper)
+            public Handler(CaravelTemplateDbContext dbContext, IMapper mapper)
             {
-                _bookRepository = bookRepository;
+                _dbContext = dbContext;
                 _mapper = mapper;
             }
 
             public async Task<GetBookByIdQueryResponse> Handle(GetBookByIdQuery request, CancellationToken ct)
             {
-                var book = await _bookRepository.GetAsync(request.Id, ct);
+                var book = await _dbContext.Books.FindAsync(request.Id);
 
                 if (book == null)
                     return new GetBookByIdQueryResponse.NotFound(new Error(Errors.BookNotFound,

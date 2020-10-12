@@ -1,4 +1,4 @@
-using System;
+using Caravel.Entities;
 
 namespace CaravelTemplate.Entities
 {

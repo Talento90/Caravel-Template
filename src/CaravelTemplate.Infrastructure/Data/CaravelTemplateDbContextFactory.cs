@@ -1,4 +1,5 @@
 using System;
+using Caravel.AppContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -14,7 +15,7 @@ namespace CaravelTemplate.Infrastructure.Data
            
             options.UseNpgsql(connectionString);
             
-            return new CaravelTemplateDbContext(options.Options);
+            return new CaravelTemplateDbContext(options.Options, new AppContextAccessor());
         }
     }
 }

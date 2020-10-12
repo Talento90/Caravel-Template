@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Caravel.Errors;
-using CaravelTemplate.Repositories;
+using CaravelTemplate.Infrastructure.Data;
 using FluentValidation;
 using MediatR;
 
@@ -32,18 +32,18 @@ namespace CaravelTemplate.Core.Books.Commands
         
         public class Handler : IRequestHandler<UpdateBookCommand, UpdateBookCommandResponse>
         {
-            private readonly IBookRepository _bookRepository;
+            private readonly CaravelTemplateDbContext _dbContext;
             private readonly IMapper _mapper;
             
-            public Handler(IBookRepository bookRepository, IMapper mapper)
+            public Handler(CaravelTemplateDbContext dbContext, IMapper mapper)
             {
-                _bookRepository = bookRepository;
+                _dbContext = dbContext;
                 _mapper = mapper;
             }
             
             public async Task<UpdateBookCommandResponse> Handle(UpdateBookCommand request, CancellationToken ct)
             {
-                var book = await _bookRepository.GetAsync(request.Id, ct);
+                var book = await _dbContext.Books.FindAsync(request.Id);
 
                 if (book == null)
                 {
@@ -55,9 +55,7 @@ namespace CaravelTemplate.Core.Books.Commands
                 book.Name = request.Name ?? book.Name;
                 book.Description = request.Description;
                 
-                _bookRepository.UpdateAsync(book);
-                
-                await _bookRepository.UnitOfWork.SaveChangesAsync(ct);
+                await _dbContext.SaveChangesAsync(ct);
 
                 return new UpdateBookCommandResponse.Success(
                     _mapper.Map<BookModel>(book));
