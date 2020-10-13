@@ -31,6 +31,8 @@
           "**/*.lock.json",
           ".idea/**/*",
           "README.md"
+          ".gitignore",
+          ".git"
         ],
         "modifiers": [
           {
