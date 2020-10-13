@@ -30,7 +30,7 @@
           "**/*.user",
           "**/*.lock.json",
           ".idea/**/*",
-          "README.md"
+          "README.md",
           ".gitignore",
           ".git"
         ],
