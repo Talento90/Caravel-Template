@@ -1,20 +1,18 @@
 using System;
 using CaravelTemplate.Infrastructure.Data;
 using CaravelTemplate.Infrastructure.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CaravelTemplate.WebApi.Tests.Fixtures
 {
     public sealed class ServerFixture : IDisposable
     {
         public readonly TestServer Server;
-        public CaravelTemplateDbContext DbContext => Server.Services.GetService<CaravelTemplateDbContext>();
+        public CaravelTemplateDbContext? DbContext => Server.Services.GetService<CaravelTemplateDbContext>();
 
         public ServerFixture()
         {
@@ -32,18 +30,19 @@ namespace CaravelTemplate.WebApi.Tests.Fixtures
             
             configuration["Jwt:Audience"] = Server.BaseAddress.ToString();
             
-            RoleSeeder.CreateRolesAsync(Server.Services.GetService<RoleManager<Role>>());
+            RoleSeeder.CreateRolesAsync(Server.Services.GetService<RoleManager<Role>>() ?? 
+                                        throw new InvalidOperationException());
         }
 
         public void SeedDatabase(params object[] entities)
         {
-            DbContext.AddRange(entities);
-            DbContext.SaveChanges();
+            DbContext?.AddRange(entities);
+            DbContext?.SaveChanges();
         }
 
         public void Dispose()
         {
-            DbContext.Database.EnsureDeleted();
+            DbContext?.Database.EnsureDeleted();
             Server.Dispose();
         }
     }

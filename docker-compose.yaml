@@ -7,10 +7,10 @@ services:
      - "5000:80"
      - "5001:443"
    environment:
-     ASPNETCORE_URLS: https://+443;http://+80
-     ASPNETCORE_HTTPS_PORT: 5001
-     ASPNETCORE_Kestrel__Certificates__Default__Path: /https/certificate.pfx
-     ASPNETCORE_Kestrel__Certificates__Default__Password: password123
+#     ASPNETCORE_URLS: https://+443;http://+80
+#     ASPNETCORE_HTTPS_PORT: 5001
+#     ASPNETCORE_Kestrel__Certificates__Default__Path: /https/certificate.pfx
+#     ASPNETCORE_Kestrel__Certificates__Default__Password: password123
      ASPNETCORE_ENVIRONMENT: Development
      DATABASE__CONNECTION_STRING: User ID=user;Password=password123;Server=postgres-db;Port=5432;Database=caravel;
    volumes:

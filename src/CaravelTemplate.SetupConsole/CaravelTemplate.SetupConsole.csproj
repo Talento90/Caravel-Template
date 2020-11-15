@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
         <LangVersion>9</LangVersion>
-        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Caravel" Version="0.11.0" />
+      <ProjectReference Include="..\CaravelTemplate.WebApi\CaravelTemplate.WebApi.csproj" />
     </ItemGroup>
 
 </Project>

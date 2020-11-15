@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Authentication;
@@ -75,7 +77,11 @@ namespace CaravelTemplate.Core.Authentication.Commands
                 }
 
                 var roles = await _userManager.GetRolesAsync(user);
-                var token = _jwtManager.GenerateAccessToken(user.Id.ToString(), user.UserName, roles.ToArray());
+                var token = _jwtManager.GenerateAccessToken(user.Id.ToString(), user.UserName, new List<Claim>()
+                {
+                    new ("roles", string.Join(',', roles))
+                });
+                
                 var refreshToken = await _tokenFactory.GenerateToken();
                 
                 _dbContext.Remove(existingRefreshToken);

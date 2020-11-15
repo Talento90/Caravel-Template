@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.101 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS builder
 
 WORKDIR /app
 
@@ -21,7 +21,7 @@ WORKDIR /app/src/CaravelTemplate.WebApi
 RUN dotnet publish -c Release -o dist
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
 
 WORKDIR /app
 

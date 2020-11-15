@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Infrastruct
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Core", "src\CaravelTemplate.Core\CaravelTemplate.Core.csproj", "{3BCE687A-423F-431F-8B83-474DC71268D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.SetupConsole", "src\CaravelTemplate.SetupConsole\CaravelTemplate.SetupConsole.csproj", "{EC354EF9-A80B-4F13-9976-FA79F3334C50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{3BCE687A-423F-431F-8B83-474DC71268D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BCE687A-423F-431F-8B83-474DC71268D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BCE687A-423F-431F-8B83-474DC71268D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC354EF9-A80B-4F13-9976-FA79F3334C50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC354EF9-A80B-4F13-9976-FA79F3334C50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC354EF9-A80B-4F13-9976-FA79F3334C50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC354EF9-A80B-4F13-9976-FA79F3334C50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4C9C8C73-266E-49D1-870B-D76DCB6B81E4} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
@@ -47,5 +53,6 @@ Global
 		{BE3CC293-8C8C-4079-A23C-C124960D43FD} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
 		{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
 		{3BCE687A-423F-431F-8B83-474DC71268D2} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
+		{EC354EF9-A80B-4F13-9976-FA79F3334C50} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
 	EndGlobalSection
 EndGlobal

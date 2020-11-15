@@ -1,5 +1,6 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Authentication;
@@ -56,7 +57,7 @@ namespace CaravelTemplate.Core.Authentication.Commands
                     return new LoginUserCommandResponse.NotFound(new Error(Errors.UserNotFound,
                         $"User {request.Username} does not exist."));
                 }
-                
+
                 if (!await _userManager.CheckPasswordAsync(user, request.Password))
                 {
                     return new LoginUserCommandResponse.InvalidPassword(new Error(
@@ -78,7 +79,10 @@ namespace CaravelTemplate.Core.Authentication.Commands
                 await _dbContext.SaveChangesAsync(ct);
 
                 var roles = await _userManager.GetRolesAsync(user);
-                var token = _jwtManager.GenerateAccessToken(user.Id.ToString(), user.UserName, roles.ToArray());
+                var token = _jwtManager.GenerateAccessToken(user.Id.ToString(), user.UserName, new List<Claim>()
+                {
+                    new ("roles", string.Join(',', roles))
+                });
 
                 return new LoginUserCommandResponse.Success(new AccessTokenModel(
                     token.Token,

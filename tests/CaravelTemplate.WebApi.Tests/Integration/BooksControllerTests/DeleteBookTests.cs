@@ -41,7 +41,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
-            _fixture.DbContext.Books.Any().Should().BeFalse();
+            _fixture.DbContext?.Books.Any().Should().BeFalse();
         }
         
         [Fact]

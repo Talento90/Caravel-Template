@@ -27,6 +27,27 @@ namespace CaravelTemplate.WebApi.Extensions
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(System.AppContext.BaseDirectory, xmlFile);
                 
+                var bearerScheme = new OpenApiSecurityScheme()
+                {
+                    Name = "Bearer Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Description = "Bearer Token Authorization header. e.g. Authorization: Bearer {token}",
+                    Scheme = "Bearer",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    },
+                };
+
+                c.AddSecurityDefinition("Bearer", bearerScheme);
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {bearerScheme, new List<string>()},
+                });
+                
                 c.IncludeXmlComments(xmlPath);
                 c.AddFluentValidationRules();
             });
