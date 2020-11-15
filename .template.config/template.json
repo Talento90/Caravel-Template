@@ -32,7 +32,7 @@
           ".idea/**/*",
           "README.md",
           ".gitignore",
-          ".git"
+          ".git/**/*"
         ],
         "modifiers": [
           {
