@@ -10,9 +10,8 @@ using AppContext = Caravel.AppContext.AppContext;
 
 namespace CaravelTemplate.Core.Users.Queries
 {
-    public class GetUserQuery : IRequest<GetUserResponse>
+    public sealed record GetUserQuery : IRequest<GetUserResponse>
     {
-
         public class Handler : IRequestHandler<GetUserQuery, GetUserResponse>
         {
             private readonly CaravelTemplateDbContext _dbContext;

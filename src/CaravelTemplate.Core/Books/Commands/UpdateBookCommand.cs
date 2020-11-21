@@ -9,11 +9,11 @@ using MediatR;
 
 namespace CaravelTemplate.Core.Books.Commands
 {
-    public class UpdateBookCommand : IRequest<UpdateBookCommandResponse>
+    public sealed record  UpdateBookCommand : IRequest<UpdateBookCommandResponse>
     {
         private Guid Id { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
+        public string? Name { get; init; }
+        public string? Description { get; init; }
 
         public UpdateBookCommand SetId(Guid id)
         {

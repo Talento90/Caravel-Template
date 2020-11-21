@@ -1,6 +1,6 @@
 namespace CaravelTemplate.Core
 {
-    public class Errors
+    public static class Errors
     {
         public const string InvalidFields = "invalid_fields";
         public const string BookNotFound = "book_not_found";

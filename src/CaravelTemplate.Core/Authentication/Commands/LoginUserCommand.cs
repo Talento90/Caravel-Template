@@ -14,10 +14,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CaravelTemplate.Core.Authentication.Commands
 {
-    public class LoginUserCommand : IRequest<LoginUserCommandResponse>
+    public sealed record LoginUserCommand : IRequest<LoginUserCommandResponse>
     {
-        public string Username { get; set; } = null!;
-        public string Password { get; set; } = null!;
+        public string Username { get; init; } = null!;
+        public string Password { get; init; } = null!;
 
         public class Validator : AbstractValidator<LoginUserCommand>
         {

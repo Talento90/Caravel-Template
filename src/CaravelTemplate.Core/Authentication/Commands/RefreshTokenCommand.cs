@@ -16,10 +16,10 @@ using Microsoft.Extensions.Options;
 
 namespace CaravelTemplate.Core.Authentication.Commands
 {
-    public class RefreshTokenCommand : IRequest<RefreshTokenCommandResponse>
+    public sealed record RefreshTokenCommand : IRequest<RefreshTokenCommandResponse>
     {
-        public string RefreshToken { get; set; } = null!;
-        public string AccessToken { get; set; } = null!;
+        public string RefreshToken { get; init; } = null!;
+        public string AccessToken { get; init; } = null!;
 
         public class Validator : AbstractValidator<RefreshTokenCommand>
         {

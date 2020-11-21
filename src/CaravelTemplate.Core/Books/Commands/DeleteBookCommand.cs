@@ -8,9 +8,9 @@ using MediatR;
 
 namespace CaravelTemplate.Core.Books.Commands
 {
-    public class DeleteBookCommand : IRequest<DeleteBookCommandResponse>
+    public sealed record DeleteBookCommand : IRequest<DeleteBookCommandResponse>
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; init; }
 
         public class Validator : AbstractValidator<DeleteBookCommand>
         {

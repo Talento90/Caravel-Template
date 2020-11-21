@@ -1,13 +1,11 @@
 namespace CaravelTemplate.Core.Authentication
 {
-    public class AccessTokenModel
+    public sealed record AccessTokenModel
     {
-        public string AccessToken { get; set; } = null!;
-        public string RefreshToken { get; set; } = null!;
-        public int ExpiresIn { get; set; }
-
-        public AccessTokenModel() { }
-
+        public string AccessToken { get; init; }
+        public string RefreshToken { get; init; }
+        public int ExpiresIn { get; init; }
+        
         public AccessTokenModel(string accessToken, int expiresIn, string refreshToken)
         {
             AccessToken = accessToken;

@@ -14,7 +14,7 @@
 
     <ItemGroup>
         <PackageReference Include="Bogus" Version="31.0.3" />
-        <PackageReference Include="Caravel" Version="0.11.0" />
+        <PackageReference Include="Caravel" Version="0.12.0" />
         <PackageReference Include="FluentAssertions" Version="5.10.3" />
         <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="5.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />

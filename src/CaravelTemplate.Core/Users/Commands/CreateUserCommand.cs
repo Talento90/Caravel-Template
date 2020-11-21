@@ -11,14 +11,14 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CaravelTemplate.Core.Users.Commands
 {
-    public class CreateUserCommand : IRequest<CreateUserCommandResponse>
+    public sealed record CreateUserCommand : IRequest<CreateUserCommandResponse>
     {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public string Email { get; set; } = null!;
-        public string Username { get; set; } = null!;
-        public string Password { get; set; } = null!;
-        public string ConfirmPassword { get; set; } = null!;
+        public string FirstName { get; init; }
+        public string LastName { get; init; }
+        public string Email { get; init; }
+        public string Username { get; init; }
+        public string Password { get; init; }
+        public string ConfirmPassword { get; init; }
 
         public class Validator : AbstractValidator<CreateUserCommand>
         {
@@ -59,7 +59,7 @@ namespace CaravelTemplate.Core.Users.Commands
                 };
 
                 var result = await _userManager.CreateAsync(user, request.Password);
-                
+
                 if (!result.Succeeded)
                 {
                     return new CreateUserCommandResponse.InvalidUser(
@@ -67,7 +67,7 @@ namespace CaravelTemplate.Core.Users.Commands
                             .SetDetails(string.Join(',', result.Errors.Select(e => e.Description)))
                     );
                 }
-                
+
                 var roleResult = await _userManager.AddToRoleAsync(user, Roles.User);
 
                 if (!roleResult.Succeeded)
