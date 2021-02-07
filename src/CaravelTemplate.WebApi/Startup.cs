@@ -9,7 +9,12 @@ using Caravel.Clock;
 using Caravel.Http;
 using Caravel.MediatR.Behaviours;
 using CaravelTemplate.Core.Books.Queries;
+using CaravelTemplate.Core.Interfaces.Authentication;
+using CaravelTemplate.Core.Interfaces.Data;
+using CaravelTemplate.Core.Interfaces.Identity;
+using CaravelTemplate.Infrastructure.Authentication;
 using CaravelTemplate.Infrastructure.Data;
+using CaravelTemplate.Infrastructure.Identity;
 using CaravelTemplate.WebApi.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -61,10 +66,12 @@ namespace CaravelTemplate.WebApi
             services.AddScoped<IAppContextAccessor, AppContextAccessor>();
             services.AddScoped<ITokenFactory, TokenFactory>();
             services.AddScoped<IJwtManager, JwtManager>();
+            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             services
                 .AddHealthChecks()
-                .AddDbContextCheck<CaravelTemplateDbContext>();
+                .AddDbContextCheck<CaravelTemplateTemplateDbContext>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

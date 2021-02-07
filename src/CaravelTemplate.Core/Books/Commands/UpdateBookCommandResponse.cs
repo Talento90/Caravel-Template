@@ -3,27 +3,16 @@ using OneOf;
 
 namespace CaravelTemplate.Core.Books.Commands
 {
-    public class UpdateBookCommandResponse :
-        OneOfBase<UpdateBookCommandResponse.Success, UpdateBookCommandResponse.NotFound>
-    {
-        public class Success : UpdateBookCommandResponse
+    public class UpdateBookCommandResponse : OneOfBase<UpdateBookCommandResponse.Success, UpdateBookCommandResponse.NotFound> {
+        private UpdateBookCommandResponse(OneOf<Success, NotFound> _) : base(_)
         {
-            public BookModel Response { get; }
-
-            public Success(BookModel response)
-            {
-                Response = response;
-            }
         }
 
-        public class NotFound : UpdateBookCommandResponse
-        {
-            public Error Error { get; set; }
+        public record Success (BookModel Response);
 
-            public NotFound(Error error)
-            {
-                Error = error;
-            }
-        }
+        public record NotFound(Error Error);
+
+        public static implicit operator UpdateBookCommandResponse(Success r) => new(r);
+        public static implicit operator UpdateBookCommandResponse(NotFound r) => new(r);
     }
 }

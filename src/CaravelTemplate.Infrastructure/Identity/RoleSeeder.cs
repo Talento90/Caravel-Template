@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using CaravelTemplate.Core.Interfaces.Identity;
 using CaravelTemplate.Entities;
 using Microsoft.AspNetCore.Identity;
 

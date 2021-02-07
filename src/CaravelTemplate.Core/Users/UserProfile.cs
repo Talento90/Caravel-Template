@@ -1,5 +1,5 @@
 using AutoMapper;
-using CaravelTemplate.Infrastructure.Identity;
+using CaravelTemplate.Entities;
 
 namespace CaravelTemplate.Core.Users
 {

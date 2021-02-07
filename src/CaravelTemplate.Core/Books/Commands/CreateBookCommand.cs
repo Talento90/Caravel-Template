@@ -1,8 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using CaravelTemplate.Core.Interfaces.Data;
 using CaravelTemplate.Entities;
-using CaravelTemplate.Infrastructure.Data;
 using FluentValidation;
 using MediatR;
 
@@ -10,7 +10,7 @@ namespace CaravelTemplate.Core.Books.Commands
 {
     public sealed record CreateBookCommand : IRequest<CreateBookCommandResponse>
     {
-        public string Name { get; init; }
+        public string Name { get; init; } = null!;
         public string? Description { get; init; }
 
         public class Validator : AbstractValidator<CreateBookCommand>
@@ -26,12 +26,12 @@ namespace CaravelTemplate.Core.Books.Commands
         
         public class Handler : IRequestHandler<CreateBookCommand, CreateBookCommandResponse>
         {
-            private readonly CaravelTemplateDbContext _dbContext;
+            private readonly ICaravelTemplateDbContext _templateDbContext;
             private readonly IMapper _mapper;
             
-            public Handler(CaravelTemplateDbContext dbContext, IMapper mapper)
+            public Handler(ICaravelTemplateDbContext templateDbContext, IMapper mapper)
             {
-                _dbContext = dbContext;
+                _templateDbContext = templateDbContext;
                 _mapper = mapper;
             }
             
@@ -39,8 +39,8 @@ namespace CaravelTemplate.Core.Books.Commands
             {
                 var book = _mapper.Map<Book>(request);
 
-                await _dbContext.AddAsync(book, ct);
-                await _dbContext.SaveChangesAsync(ct);
+                await _templateDbContext.Books.AddAsync(book, ct);
+                await _templateDbContext.SaveChangesAsync(ct);
                 
                 return new CreateBookCommandResponse.Success(_mapper.Map<BookModel>(book));
             }

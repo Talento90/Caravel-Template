@@ -1,7 +1,7 @@
 using System;
 using Caravel.Entities;
 
-namespace CaravelTemplate.Entities
+namespace CaravelTemplate.Infrastructure.Authentication
 {
     public class RefreshToken : Entity
     {

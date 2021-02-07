@@ -1,11 +1,8 @@
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Caravel.Errors;
-using CaravelTemplate.Infrastructure.Data;
+using CaravelTemplate.Core.Interfaces.Data;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -37,19 +34,19 @@ namespace CaravelTemplate.Core.Books.Queries
 
         public class Handler : IRequestHandler<GetBooksQuery, GetBooksQueryResponse>
         {
-            private readonly CaravelTemplateDbContext _dbContext;
+            private readonly ICaravelTemplateDbContext _templateDbContext;
             private readonly IMapper _mapper;
 
-            public Handler(CaravelTemplateDbContext dbContext, IMapper mapper)
+            public Handler(ICaravelTemplateDbContext templateDbContext, IMapper mapper)
             {
-                _dbContext = dbContext;
+                _templateDbContext = templateDbContext;
                 _mapper = mapper;
             }
 
             public async Task<GetBooksQueryResponse> Handle(GetBooksQuery request, CancellationToken ct)
             {
                 var books = await _mapper.ProjectTo<BookModel>(
-                    _dbContext.Books
+                    _templateDbContext.Books
                         .Skip(request.Skip)
                         .Take(request.Page)
                 ).ToListAsync(ct);

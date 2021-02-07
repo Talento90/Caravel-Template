@@ -1,24 +1,23 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Caravel.Errors;
+using Caravel.Functional;
+using CaravelTemplate.Core.Interfaces.Identity;
 using CaravelTemplate.Entities;
-using CaravelTemplate.Infrastructure.Identity;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace CaravelTemplate.Core.Users.Commands
 {
     public sealed record CreateUserCommand : IRequest<CreateUserCommandResponse>
     {
-        public string FirstName { get; init; }
-        public string LastName { get; init; }
-        public string Email { get; init; }
-        public string Username { get; init; }
-        public string Password { get; init; }
-        public string ConfirmPassword { get; init; }
+        public string FirstName { get; init; } = null!;
+        public string LastName { get; init; } = null!;
+        public string Email { get; init; } = null!;
+        public string Username { get; init; } = null!;
+        public string Password { get; init; } = null!;
+        public string ConfirmPassword { get; init; } = null!;
 
         public class Validator : AbstractValidator<CreateUserCommand>
         {
@@ -39,46 +38,30 @@ namespace CaravelTemplate.Core.Users.Commands
 
         public class Handler : IRequestHandler<CreateUserCommand, CreateUserCommandResponse>
         {
-            private readonly UserManager<User> _userManager;
+            private readonly IIdentityService _identityService;
             private readonly IMapper _mapper;
 
-            public Handler(UserManager<User> userManager, IMapper mapper)
+            public Handler(IIdentityService identityService, IMapper mapper)
             {
-                _userManager = userManager;
+                _identityService = identityService;
                 _mapper = mapper;
             }
 
             public async Task<CreateUserCommandResponse> Handle(CreateUserCommand request, CancellationToken ct)
             {
-                var user = new User
-                {
-                    Email = request.Email,
-                    UserName = request.Username,
-                    FirstName = request.FirstName,
-                    LastName = request.LastName
-                };
+                Either<Error, User> result = await _identityService.CreateUserAsync(new CreateUser(
+                    request.Username,
+                    request.FirstName,
+                    request.LastName,
+                    request.Email,
+                    request.Password,
+                    new [] {Roles.User}
+                    ));
 
-                var result = await _userManager.CreateAsync(user, request.Password);
-
-                if (!result.Succeeded)
-                {
-                    return new CreateUserCommandResponse.InvalidUser(
-                        new Error(Errors.UserCreation, "Error creating user.")
-                            .SetDetails(string.Join(',', result.Errors.Select(e => e.Description)))
+                return result.Fold<Error, User, CreateUserCommandResponse>(
+                    (Error err) => new CreateUserCommandResponse.InvalidUser(err),
+                        (User user) => new CreateUserCommandResponse.Success(_mapper.Map<UserModel>(user))
                     );
-                }
-
-                var roleResult = await _userManager.AddToRoleAsync(user, Roles.User);
-
-                if (!roleResult.Succeeded)
-                {
-                    return new CreateUserCommandResponse.InvalidUser(
-                        new Error(Errors.UserCreation, "Error associating role to user.")
-                            .SetDetails(string.Join(',', result.Errors.Select(e => e.Description)))
-                    );
-                }
-
-                return new CreateUserCommandResponse.Success(_mapper.Map<UserModel>(user));
             }
         }
     }

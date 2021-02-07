@@ -6,34 +6,14 @@ namespace CaravelTemplate.Core.Authentication.Commands
     public class LoginUserCommandResponse : 
         OneOfBase<LoginUserCommandResponse.Success, LoginUserCommandResponse.NotFound, LoginUserCommandResponse.InvalidPassword>
     {
-        public class Success : LoginUserCommandResponse
-        {
-            public AccessTokenModel Response { get; }
-
-            public Success(AccessTokenModel response)
-            {
-                Response = response;
-            }
-        }
+        private LoginUserCommandResponse(OneOf<Success,NotFound, InvalidPassword> _):base(_) { }
+        public record Success (AccessTokenModel Response);
+        public record NotFound (Error Error);
+        public record InvalidPassword (Error Error);
         
-        public class NotFound : LoginUserCommandResponse
-        {
-            public Error Error { get; set; }
+        public static implicit operator LoginUserCommandResponse(Success r) => new (r);
+        public static implicit operator LoginUserCommandResponse(NotFound r) => new (r);
+        public static implicit operator LoginUserCommandResponse(InvalidPassword r) => new (r);
 
-            public NotFound(Error error)
-            {
-                Error = error;
-            }
-        }
-        
-        public class InvalidPassword : LoginUserCommandResponse
-        {
-            public Error Error { get; set; }
-
-            public InvalidPassword(Error error)
-            {
-                Error = error;
-            }
-        }
     }
 }

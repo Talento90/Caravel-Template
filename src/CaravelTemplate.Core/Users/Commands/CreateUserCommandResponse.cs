@@ -3,27 +3,15 @@ using OneOf;
 
 namespace CaravelTemplate.Core.Users.Commands
 {
-    public class CreateUserCommandResponse : 
-        OneOfBase<CreateUserCommandResponse.Success, CreateUserCommandResponse.InvalidUser>
+    public class CreateUserCommandResponse : OneOfBase<CreateUserCommandResponse.Success, CreateUserCommandResponse.InvalidUser>
     {
-        public class Success : CreateUserCommandResponse
-        {
-            public UserModel Response { get; }
-
-            public Success(UserModel response)
-            {
-                Response = response;
-            }
-        }
+        private CreateUserCommandResponse(OneOf<Success, InvalidUser> _): base(_) { }
         
-        public class InvalidUser : CreateUserCommandResponse
-        {
-            public Error Error { get; set; }
+        public record Success(UserModel Response);
 
-            public InvalidUser(Error error)
-            {
-                Error = error;
-            }
-        }
+        public record InvalidUser(Error Error);
+        
+        public static implicit operator CreateUserCommandResponse(Success r) => new (r);
+        public static implicit operator CreateUserCommandResponse(InvalidUser r) => new (r);
     }
 }

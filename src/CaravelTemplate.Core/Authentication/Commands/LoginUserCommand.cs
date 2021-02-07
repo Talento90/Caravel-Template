@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using Caravel.AspNetCore.Authentication;
 using Caravel.Errors;
-using CaravelTemplate.Entities;
-using CaravelTemplate.Infrastructure.Data;
-using CaravelTemplate.Infrastructure.Identity;
+using Caravel.Functional;
+using CaravelTemplate.Core.Interfaces.Authentication;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace CaravelTemplate.Core.Authentication.Commands
 {
@@ -30,65 +24,24 @@ namespace CaravelTemplate.Core.Authentication.Commands
 
         public class Handler : IRequestHandler<LoginUserCommand, LoginUserCommandResponse>
         {
-            private readonly UserManager<User> _userManager;
-            private readonly IJwtManager _jwtManager;
-            private readonly ITokenFactory _tokenFactory;
-            private readonly CaravelTemplateDbContext _dbContext;
+            private readonly IAuthenticationService _authService;
 
-            public Handler(
-                UserManager<User> userManager,
-                IJwtManager jwtManager,
-                ITokenFactory tokenFactory,
-                CaravelTemplateDbContext dbContext
-            )
+            public Handler(IAuthenticationService authService)
             {
-                _userManager = userManager;
-                _jwtManager = jwtManager;
-                _tokenFactory = tokenFactory;
-                _dbContext = dbContext;
+                _authService = authService;
             }
 
             public async Task<LoginUserCommandResponse> Handle(LoginUserCommand request, CancellationToken ct)
             {
-                var user = await _userManager.FindByNameAsync(request.Username);
+                var result = await _authService.LoginUserAsync(request.Username, request.Password, ct);
 
-                if (user == null)
-                {
-                    return new LoginUserCommandResponse.NotFound(new Error(Errors.UserNotFound,
-                        $"User {request.Username} does not exist."));
-                }
-
-                if (!await _userManager.CheckPasswordAsync(user, request.Password))
-                {
-                    return new LoginUserCommandResponse.InvalidPassword(new Error(
-                        Errors.MatchPassword,
-                        $"Password does not match.")
-                    );
-                }
-
-                var refreshToken = await _tokenFactory.GenerateToken();
-
-
-                await _dbContext.RefreshTokens.AddAsync(new RefreshToken(
-                    refreshToken,
-                    DateTime.UtcNow.AddDays(30),
-                    user.Id
-                ), ct);
-
-
-                await _dbContext.SaveChangesAsync(ct);
-
-                var roles = await _userManager.GetRolesAsync(user);
-                var token = _jwtManager.GenerateAccessToken(user.Id.ToString(), user.UserName, new List<Claim>()
-                {
-                    new ("roles", string.Join(',', roles))
-                });
-
-                return new LoginUserCommandResponse.Success(new AccessTokenModel(
-                    token.Token,
-                    token.ExpiresIn,
-                    refreshToken
-                ));
+                return result.Fold<Error, AccessToken, LoginUserCommandResponse>(
+                    err => new LoginUserCommandResponse.InvalidPassword(err),
+                    token => new LoginUserCommandResponse.Success(new AccessTokenModel(
+                        token.Token,
+                        token.ExpiresIn,
+                        token.RefreshToken
+                    )));
             }
         }
     }

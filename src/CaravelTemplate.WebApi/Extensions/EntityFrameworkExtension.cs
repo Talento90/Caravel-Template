@@ -1,3 +1,4 @@
+using CaravelTemplate.Core.Interfaces.Data;
 using CaravelTemplate.Infrastructure.Data;
 using CaravelTemplate.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,9 @@ namespace CaravelTemplate.WebApi.Extensions
         {
             var dbConfig = configuration.GetSection("Database").Get<DatabaseSettings>();
 
-            services.AddDbContext<CaravelTemplateDbContext>(options =>
+            services.AddScoped<ICaravelTemplateDbContext, CaravelTemplateTemplateDbContext>();
+            
+            services.AddDbContext<CaravelTemplateTemplateDbContext>(options =>
             {
                 if (dbConfig.IsInMemory)
                 {
@@ -30,7 +33,7 @@ namespace CaravelTemplate.WebApi.Extensions
                     options.Password.RequiredLength = 8;
                     options.User.RequireUniqueEmail = true;
                 })
-                .AddEntityFrameworkStores<CaravelTemplateDbContext>();
+                .AddEntityFrameworkStores<CaravelTemplateTemplateDbContext>();
         }
     }
 }

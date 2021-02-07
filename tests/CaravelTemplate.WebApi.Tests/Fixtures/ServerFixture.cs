@@ -12,7 +12,7 @@ namespace CaravelTemplate.WebApi.Tests.Fixtures
     public sealed class ServerFixture : IDisposable
     {
         public readonly TestServer Server;
-        public CaravelTemplateDbContext? DbContext => Server.Services.GetService<CaravelTemplateDbContext>();
+        public CaravelTemplateTemplateDbContext? DbContext => Server.Services.GetService<CaravelTemplateTemplateDbContext>();
 
         public ServerFixture()
         {

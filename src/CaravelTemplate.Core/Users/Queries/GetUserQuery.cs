@@ -3,8 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Caravel.AppContext;
 using Caravel.Errors;
-using CaravelTemplate.Infrastructure.Data;
-using FluentValidation;
+using CaravelTemplate.Core.Interfaces.Identity;
 using MediatR;
 using AppContext = Caravel.AppContext.AppContext;
 
@@ -14,20 +13,20 @@ namespace CaravelTemplate.Core.Users.Queries
     {
         public class Handler : IRequestHandler<GetUserQuery, GetUserResponse>
         {
-            private readonly CaravelTemplateDbContext _dbContext;
+            private readonly IIdentityService _identityService;
             private readonly IMapper _mapper;
             private readonly AppContext _appContext;
 
-            public Handler(CaravelTemplateDbContext dbContext, IAppContextAccessor appContextAccessor, IMapper mapper)
+            public Handler(IIdentityService identityService, IAppContextAccessor appContextAccessor, IMapper mapper)
             {
-                _dbContext = dbContext;
+                _identityService = identityService;
                 _mapper = mapper;
                 _appContext = appContextAccessor.Context;
             }
 
             public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken ct)
             {
-                var user = await _dbContext.Users.FindAsync(_appContext.UserId);
+                var user = await _identityService.GetUserByIdAsync(_appContext.UserId!.Value);
 
                 if (user == null)
                     return new GetUserResponse.NotFound(

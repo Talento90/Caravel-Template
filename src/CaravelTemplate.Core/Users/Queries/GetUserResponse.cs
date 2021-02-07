@@ -5,24 +5,13 @@ namespace CaravelTemplate.Core.Users.Queries
 {
     public class GetUserResponse : OneOfBase<GetUserResponse.Success, GetUserResponse.NotFound>
     {
-        public class Success : GetUserResponse
-        {
-            public UserModel Response { get; }
+        private GetUserResponse(OneOf<Success, NotFound> _) : base(_) { }
 
-            public Success(UserModel response)
-            {
-                Response = response;
-            }
-        }
+        public record Success (UserModel Response);
 
-        public class NotFound : GetUserResponse
-        {
-            public Error Error { get; set; }
-
-            public NotFound(Error error)
-            {
-                Error = error;
-            }
-        }
+        public record NotFound (Error Error);
+        
+        public static implicit operator GetUserResponse(Success r) => new (r);
+        public static implicit operator GetUserResponse(NotFound r) => new (r);
     }
 }

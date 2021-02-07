@@ -3,17 +3,11 @@ using OneOf;
 
 namespace CaravelTemplate.Core.Books.Queries
 {
-    public class
-        GetBooksQueryResponse : OneOfBase<GetBooksQueryResponse.Success>
+    public class GetBooksQueryResponse : OneOfBase<GetBooksQueryResponse.Success>
     {
-        public class Success : GetBooksQueryResponse
-        {
-            public IEnumerable<BookModel> Books { get; }
+        private GetBooksQueryResponse(OneOf<Success> _) : base(_) { }
 
-            public Success(IEnumerable<BookModel> books)
-            {
-                Books = books;
-            }
-        }
+        public record Success (IEnumerable<BookModel> Books);
+        public static implicit operator GetBooksQueryResponse(Success _) => new (_);
     }
 }

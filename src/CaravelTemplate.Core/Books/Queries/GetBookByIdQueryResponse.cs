@@ -3,27 +3,14 @@ using OneOf;
 
 namespace CaravelTemplate.Core.Books.Queries
 {
-    public class
-        GetBookByIdQueryResponse : OneOfBase<GetBookByIdQueryResponse.Success, GetBookByIdQueryResponse.NotFound>
-    {
-        public class Success : GetBookByIdQueryResponse
-        {
-            public BookModel Response { get; }
+    public class GetBookByIdQueryResponse : OneOfBase<GetBookByIdQueryResponse.Success, GetBookByIdQueryResponse.NotFound> {
+        private GetBookByIdQueryResponse(OneOf<Success, NotFound> _) : base(_) { }
 
-            public Success(BookModel response)
-            {
-                Response = response;
-            }
-        }
+        public record Success(BookModel Response);
 
-        public class NotFound : GetBookByIdQueryResponse
-        {
-            public Error Error { get; set; }
-
-            public NotFound(Error error)
-            {
-                Error = error;
-            }
-        }
+        public record NotFound(Error Error);
+        
+        public static implicit operator GetBookByIdQueryResponse(Success r) => new(r);
+        public static implicit operator GetBookByIdQueryResponse(NotFound r) => new(r);
     }
 }

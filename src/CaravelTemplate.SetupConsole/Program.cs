@@ -16,7 +16,7 @@ using Serilog;
 
 namespace CaravelTemplate.SetupConsole
 {
-    class Program
+    internal static class Program
     {
         private static IConfiguration Configuration { get; } = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -36,7 +36,7 @@ namespace CaravelTemplate.SetupConsole
                 var host = CreateHostBuilder()
                     .Build();
                 
-                var dbContext = host.Services.GetService<CaravelTemplateDbContext>() ?? throw new NoNullAllowedException();
+                var dbContext = host.Services.GetService<CaravelTemplateTemplateDbContext>() ?? throw new NoNullAllowedException();
 
                 Log.Information("Apply Database Migrations");
 
@@ -46,7 +46,7 @@ namespace CaravelTemplate.SetupConsole
                 
                 var roleManager = host.Services.GetRequiredService<RoleManager<Role>>();
 
-                await SeedDatabase.SeedRoles(roleManager);
+                await RoleSeeder.CreateRolesAsync(roleManager);
 
                 Log.Information("Setup Completed");
 
@@ -66,14 +66,7 @@ namespace CaravelTemplate.SetupConsole
 
         private static IHostBuilder CreateHostBuilder() =>
             new HostBuilder()
-                .ConfigureAppConfiguration(c =>
-                {
-                    new ConfigurationBuilder()
-                        .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                        .AddJsonFile($"appsettings.{Env.GetEnv()}.json", optional: true)
-                        .AddEnvironmentVariables();
-                })
+                .ConfigureAppConfiguration(c => { })
                 .ConfigureLogging(((context, builder) => { builder.AddSerilog(); }))
                 .ConfigureServices(services => { services.ConfigureEntityFramework(Configuration); })
                 .UseSerilog();

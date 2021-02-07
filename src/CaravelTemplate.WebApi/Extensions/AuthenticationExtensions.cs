@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using Caravel.AspNetCore.Authentication;
+using CaravelTemplate.Core.Interfaces.Identity;
 using CaravelTemplate.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

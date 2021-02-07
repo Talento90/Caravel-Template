@@ -10,34 +10,14 @@ namespace CaravelTemplate.Core.Authentication.Commands
             RefreshTokenCommandResponse.InvalidAccessToken
         >
     {
-        public class Success : RefreshTokenCommandResponse
-        {
-            public AccessTokenModel Response { get; }
-
-            public Success(AccessTokenModel response)
-            {
-                Response = response;
-            }
-        }
-
-        public class RefreshTokenNotFound : RefreshTokenCommandResponse
-        {
-            public Error Error { get; }
-
-            public RefreshTokenNotFound(Error error)
-            {
-                Error = error;
-            }
-        }
-
-        public class InvalidAccessToken : RefreshTokenCommandResponse
-        {
-            public Error Error { get; }
-
-            public InvalidAccessToken(Error error)
-            {
-                Error = error;
-            }
-        }
+        private RefreshTokenCommandResponse(OneOf<Success, RefreshTokenNotFound, InvalidAccessToken> _):base(_) { }
+        
+        public record Success (AccessTokenModel Response);
+        public record RefreshTokenNotFound (Error Error);
+        public record InvalidAccessToken (Error Error);
+        
+        public static implicit operator RefreshTokenCommandResponse(Success r) => new (r);
+        public static implicit operator RefreshTokenCommandResponse(RefreshTokenNotFound r) => new (r);
+        public static implicit operator RefreshTokenCommandResponse(InvalidAccessToken r) => new (r);
     }
 }
