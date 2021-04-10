@@ -49,7 +49,7 @@ namespace CaravelTemplate.WebApi.Extensions
                 });
                 
                 c.IncludeXmlComments(xmlPath);
-                c.AddFluentValidationRules();
+                //c.AddFluentValidationRules();
             });
         }
     }

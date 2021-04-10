@@ -1,16 +1,11 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using AutoMapper;
 using FluentValidation.AspNetCore;
 using Caravel.AppContext;
 using Caravel.AspNetCore.Authentication;
 using Caravel.AspNetCore.Middleware;
 using Caravel.Clock;
-using Caravel.Http;
 using Caravel.MediatR.Behaviours;
 using CaravelTemplate.Core.Books.Queries;
 using CaravelTemplate.Core.Interfaces.Authentication;
-using CaravelTemplate.Core.Interfaces.Data;
 using CaravelTemplate.Core.Interfaces.Identity;
 using CaravelTemplate.Infrastructure.Authentication;
 using CaravelTemplate.Infrastructure.Data;
@@ -39,12 +34,16 @@ namespace CaravelTemplate.WebApi
         {
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(typeof(GetBookByIdQuery).Assembly))
-                .AddJsonOptions(opt =>
+                .AddNewtonsoftJson(options =>
                 {
-                    opt.JsonSerializerOptions.IgnoreNullValues = true;
-                    opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-                    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-                    opt.JsonSerializerOptions.Converters.Add(new JsonDateTimeConverter());
+                    var settings = Caravel.Http.JsonSerializerOptions.CamelCase();
+
+                    options.SerializerSettings.ContractResolver = settings.ContractResolver;
+                    options.SerializerSettings.NullValueHandling = settings.NullValueHandling;
+                    options.SerializerSettings.Converters = settings.Converters;
+                    options.SerializerSettings.DateFormatString = settings.DateFormatString;
+                    options.SerializerSettings.DateTimeZoneHandling = settings.DateTimeZoneHandling;
+                    options.SerializerSettings.DateFormatHandling = settings.DateFormatHandling;
                 });
 
             services.Configure<ApiBehaviorOptions>(opt => { opt.SuppressModelStateInvalidFilter = true; });
