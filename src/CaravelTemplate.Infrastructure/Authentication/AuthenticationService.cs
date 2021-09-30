@@ -8,12 +8,11 @@ using Caravel.AspNetCore.Authentication;
 using Caravel.Errors;
 using Caravel.Functional;
 using CaravelTemplate.Core;
-using CaravelTemplate.Core.Interfaces.Authentication;
-using CaravelTemplate.Entities;
+using CaravelTemplate.Core.Authentication;
 using CaravelTemplate.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using AccessToken = CaravelTemplate.Core.Interfaces.Authentication.AccessToken;
+using AccessToken = CaravelTemplate.Core.Authentication.AccessToken;
 
 namespace CaravelTemplate.Infrastructure.Authentication
 {
@@ -39,8 +38,7 @@ namespace CaravelTemplate.Infrastructure.Authentication
             _jwtIssuerSettings = jwtIssuerSettings.Value;
         }
 
-        public async Task<Either<Error, AccessToken>> LoginUserAsync(string username, string password,
-            CancellationToken ct)
+        public async Task<Either<Error, AccessToken>> LoginUserAsync(string username, string password, CancellationToken ct)
         {
             var user = await _userManager.FindByNameAsync(username);
 

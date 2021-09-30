@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caravel.AppContext;
 using Caravel.Entities;
-using CaravelTemplate.Core.Interfaces.Data;
+using CaravelTemplate.Core.Data;
 using CaravelTemplate.Entities;
 using CaravelTemplate.Infrastructure.Authentication;
 using CaravelTemplate.Infrastructure.Identity;
@@ -14,7 +14,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CaravelTemplate.Infrastructure.Data
 {
-    public class CaravelTemplateTemplateDbContext : IdentityDbContext<Identity.User, Role, Guid>, ICaravelTemplateDbContext
+    public class CaravelTemplateTemplateDbContext : IdentityDbContext<Identity.User, Role, Guid>,
+        ICaravelTemplateDbContext
     {
         public const string DefaultSchema = "CaravelTemplate";
 
@@ -25,7 +26,7 @@ namespace CaravelTemplate.Infrastructure.Data
         public CaravelTemplateTemplateDbContext(
             DbContextOptions<CaravelTemplateTemplateDbContext> options,
             IAppContextAccessor appContextAccessor
-            ) : base(options)
+        ) : base(options)
         {
             _contextAccessor = appContextAccessor;
         }
@@ -41,7 +42,7 @@ namespace CaravelTemplate.Infrastructure.Data
             NormalizeTableNames(modelBuilder);
             ApplyUtcDateConverter(modelBuilder);
         }
-        
+
         public override int SaveChanges()
         {
             AuditEntities();
@@ -61,7 +62,7 @@ namespace CaravelTemplate.Infrastructure.Data
                 d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
 
             var nullableUtcDateTimeConverter = new ValueConverter<DateTime?, DateTime?>(
-                d => d, 
+                d => d,
                 d => d.HasValue ? DateTime.SpecifyKind(d.Value, DateTimeKind.Utc) : d);
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
@@ -69,14 +70,14 @@ namespace CaravelTemplate.Infrastructure.Data
                 var properties = entityType
                     .GetProperties()
                     .Where(p => p.Name.EndsWith("Utc"));
-                
+
                 foreach (var p in properties)
                 {
                     if (p.ClrType == typeof(DateTime))
                     {
                         p.SetValueConverter(utcDateTimeConverter);
                     }
-                    
+
                     if (p.ClrType == typeof(DateTime?))
                     {
                         p.SetValueConverter(nullableUtcDateTimeConverter);
@@ -88,8 +89,8 @@ namespace CaravelTemplate.Infrastructure.Data
         private void AuditEntities()
         {
             var userId = _contextAccessor.Context.UserId;
-            
-            
+
+
             var entries = ChangeTracker
                 .Entries()
                 .Where(e => e.Entity is IAuditable && (
@@ -101,44 +102,43 @@ namespace CaravelTemplate.Infrastructure.Data
             {
                 IEntity entity = (IEntity) entityEntry.Entity;
 
-                if (entity != null)
+
+                switch (entityEntry.State)
                 {
-                    switch (entityEntry.State)
+                    case EntityState.Added:
                     {
-                        case EntityState.Added:
-                        {
-                            entity.Created = DateTime.UtcNow;
-                    
-                            if (userId.HasValue)
-                            {
-                                entity.CreatedBy = userId.Value;
-                            }
+                        entity.Created = DateTime.UtcNow;
 
-                            break;
-                        }
-                        case EntityState.Modified:
-                        case EntityState.Deleted:
+                        if (userId.HasValue)
                         {
-                            entity.Updated = DateTime.UtcNow;
-                
-                            if (userId.HasValue)
-                            {
-                                entity.UpdatedBy = userId.Value;
-                            }
-
-                            break;
+                            entity.CreatedBy = userId.Value;
                         }
+
+                        break;
+                    }
+                    case EntityState.Modified:
+                    case EntityState.Deleted:
+                    {
+                        entity.Updated = DateTime.UtcNow;
+
+                        if (userId.HasValue)
+                        {
+                            entity.UpdatedBy = userId.Value;
+                        }
+
+                        break;
                     }
                 }
             }
         }
-        
+
         private static void NormalizeTableNames(ModelBuilder modelBuilder)
         {
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 var tableName = entityType.GetTableName();
-                if (tableName.StartsWith("AspNet"))
+                
+                if (tableName is not null && tableName.StartsWith("AspNet"))
                 {
                     entityType.SetTableName(tableName.Substring(6));
                 }

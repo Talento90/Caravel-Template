@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caravel.Errors;
 using Caravel.Functional;
-using CaravelTemplate.Core.Interfaces.Authentication;
 using FluentValidation;
 using MediatR;
 

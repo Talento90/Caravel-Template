@@ -4,9 +4,10 @@ using Caravel.AspNetCore.Authentication;
 using Caravel.AspNetCore.Middleware;
 using Caravel.Clock;
 using Caravel.MediatR.Behaviours;
+using Caravel.MediatR.Security;
+using CaravelTemplate.Core.Authentication;
 using CaravelTemplate.Core.Books.Queries;
-using CaravelTemplate.Core.Interfaces.Authentication;
-using CaravelTemplate.Core.Interfaces.Identity;
+using CaravelTemplate.Core.Identity;
 using CaravelTemplate.Infrastructure.Authentication;
 using CaravelTemplate.Infrastructure.Data;
 using CaravelTemplate.Infrastructure.Identity;
@@ -57,7 +58,6 @@ namespace CaravelTemplate.WebApi
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            services.AddAuthorizeFromAssembly(typeof(GetBookByIdQuery).Assembly);
             services.AddMediatR(typeof(GetBookByIdQuery).Assembly);
 
             services.AddHttpContextAccessor();
@@ -67,6 +67,7 @@ namespace CaravelTemplate.WebApi
             services.AddScoped<IJwtManager, JwtManager>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IAuthorizer, IdentityService>();
 
             services
                 .AddHealthChecks()

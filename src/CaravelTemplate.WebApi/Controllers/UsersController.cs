@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Http;
-using CaravelTemplate.Core.Interfaces.Identity;
+using CaravelTemplate.Core.Identity;
 using CaravelTemplate.Core.Users;
 using CaravelTemplate.Core.Users.Commands;
 using CaravelTemplate.Core.Users.Queries;

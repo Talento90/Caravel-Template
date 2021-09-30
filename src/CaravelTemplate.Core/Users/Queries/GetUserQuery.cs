@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Caravel.AppContext;
 using Caravel.Errors;
-using CaravelTemplate.Core.Interfaces.Identity;
+using CaravelTemplate.Core.Identity;
 using MediatR;
 using AppContext = Caravel.AppContext.AppContext;
 

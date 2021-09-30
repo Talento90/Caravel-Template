@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using CaravelTemplate.Core.Interfaces.Data;
+using CaravelTemplate.Core.Data;
 using CaravelTemplate.Entities;
 using FluentValidation;
 using MediatR;

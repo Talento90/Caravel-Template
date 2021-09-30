@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Caravel.Errors;
 using Caravel.Functional;
 
-namespace CaravelTemplate.Core.Interfaces.Authentication
+namespace CaravelTemplate.Core.Authentication
 {
     public interface IAuthenticationService
     {

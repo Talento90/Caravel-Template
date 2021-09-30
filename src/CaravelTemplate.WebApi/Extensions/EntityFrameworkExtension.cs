@@ -1,4 +1,4 @@
-using CaravelTemplate.Core.Interfaces.Data;
+using CaravelTemplate.Core.Data;
 using CaravelTemplate.Infrastructure.Data;
 using CaravelTemplate.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;

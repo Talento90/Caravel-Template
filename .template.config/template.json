@@ -13,13 +13,6 @@
     },
     "sourceName": "CaravelTemplate",
     "preferNameDirectory": true,
-    "symbols": {
-      "includetest": {
-        "type": "parameter",
-        "datatype": "bool",
-        "defaultValue": "true"
-      }
-    },
     "sources": [
       {
         "exclude": [
@@ -33,14 +26,6 @@
           "README.md",
           ".gitignore",
           ".git/**/*"
-        ],
-        "modifiers": [
-          {
-            "condition": "(!includetest)",
-            "exclude": [
-              "tests/src/CaravelTemplate.WebApi.Test/**/*"
-            ]
-          }
         ],
         "rename": {
           "template.gitignore": ".gitignore",

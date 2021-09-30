@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
-using CaravelTemplate.Core.Interfaces.Identity;
-using CaravelTemplate.Entities;
+using CaravelTemplate.Core.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace CaravelTemplate.Infrastructure.Identity

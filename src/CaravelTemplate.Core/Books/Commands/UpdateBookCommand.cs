@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Caravel.Errors;
-using CaravelTemplate.Core.Interfaces.Data;
+using CaravelTemplate.Core.Data;
 using FluentValidation;
 using MediatR;
 

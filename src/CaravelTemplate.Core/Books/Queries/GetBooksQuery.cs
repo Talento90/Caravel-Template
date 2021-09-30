@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using CaravelTemplate.Core.Interfaces.Data;
+using CaravelTemplate.Core.Data;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CaravelTemplate.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CaravelTemplate.Core.Interfaces.Data
+namespace CaravelTemplate.Core.Data
 {
     public interface ICaravelTemplateDbContext
     {
