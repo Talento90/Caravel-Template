@@ -13,20 +13,21 @@ using Xunit;
 namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
 {
     [Collection("Integration")]
-    public class CreateBookTests : IDisposable
+    public class CreateBookTests : IClassFixture<ServerFixture>, IDisposable
     {
         private const string ApiUrl = "/api/v1/books";
         private readonly ServerFixture _fixture;
 
-        public CreateBookTests()
+        public CreateBookTests(ServerFixture fixture)
         {
-            _fixture = new ServerFixture();
+            _fixture = fixture;
         }
         
         [Fact]
         public async Task Create_Book_Created()
         {
             // Arrange
+            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
             var createBook = new CreateBookCommand
             {
@@ -50,6 +51,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
         public async Task Create_Book_Missing_Name_Bad_Request()
         {
             // Arrange
+            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
             var createBook = new CreateBookCommand
             {
@@ -70,7 +72,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
 
         public void Dispose()
         {
-            _fixture?.Dispose();
+            _fixture?.ClearDatabase();
         }
     }
 }

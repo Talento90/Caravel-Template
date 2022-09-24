@@ -1,18 +1,6 @@
-using FluentValidation.AspNetCore;
-using Caravel.AppContext;
-using Caravel.AspNetCore.Authentication;
 using Caravel.AspNetCore.Middleware;
-using Caravel.Clock;
-using Caravel.MediatR.Behaviours;
-using Caravel.MediatR.Security;
-using CaravelTemplate.Core.Authentication;
-using CaravelTemplate.Core.Books.Queries;
-using CaravelTemplate.Core.Identity;
-using CaravelTemplate.Infrastructure.Authentication;
 using CaravelTemplate.Infrastructure.Data;
-using CaravelTemplate.Infrastructure.Identity;
 using CaravelTemplate.WebApi.Extensions;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -34,11 +22,9 @@ namespace CaravelTemplate.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(typeof(GetBookByIdQuery).Assembly))
                 .AddNewtonsoftJson(options =>
                 {
                     var settings = Caravel.Http.JsonSerializerOptions.CamelCase();
-
                     options.SerializerSettings.ContractResolver = settings.ContractResolver;
                     options.SerializerSettings.NullValueHandling = settings.NullValueHandling;
                     options.SerializerSettings.Converters = settings.Converters;
@@ -46,29 +32,16 @@ namespace CaravelTemplate.WebApi
                     options.SerializerSettings.DateTimeZoneHandling = settings.DateTimeZoneHandling;
                     options.SerializerSettings.DateFormatHandling = settings.DateFormatHandling;
                 });
-
+            
             services.Configure<ApiBehaviorOptions>(opt => { opt.SuppressModelStateInvalidFilter = true; });
 
             services.ConfigureEntityFramework(Configuration);
             services.ConfigureAuthentication(Configuration);
             services.ConfigureSwagger();
+            services.ConfigureServices();
+            services.ConfigureObservability();
+
             services.AddRouting(r => r.LowercaseUrls = true);
-
-            services.AddAutoMapper(typeof(GetBookByIdQuery).Assembly);
-
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            services.AddMediatR(typeof(GetBookByIdQuery).Assembly);
-
-            services.AddHttpContextAccessor();
-            services.AddScoped<IClock, DateTimeClock>();
-            services.AddScoped<IAppContextAccessor, AppContextAccessor>();
-            services.AddScoped<ITokenFactory, TokenFactory>();
-            services.AddScoped<IJwtManager, JwtManager>();
-            services.AddScoped<IIdentityService, IdentityService>();
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<IAuthorizer, IdentityService>();
-
             services
                 .AddHealthChecks()
                 .AddDbContextCheck<CaravelTemplateTemplateDbContext>();
@@ -85,15 +58,19 @@ namespace CaravelTemplate.WebApi
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseMiddleware<TraceIdMiddleware>();
             app.UseMiddleware<AppContextEnricherMiddleware>();
             app.UseMiddleware<LoggingMiddleware>(Options.Create(new LoggingSettings()
             {
-                EnableLogBody = true
+                EnableLogBody = false
             }));
-            app.UseMiddleware<ExceptionMiddleware>();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapPrometheusScrapingEndpoint("/metrics");
+            });
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>

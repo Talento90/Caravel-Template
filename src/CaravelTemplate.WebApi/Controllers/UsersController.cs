@@ -6,6 +6,7 @@ using CaravelTemplate.Core.Users;
 using CaravelTemplate.Core.Users.Commands;
 using CaravelTemplate.Core.Users.Queries;
 using CaravelTemplate.Entities;
+using CaravelTemplate.WebApi.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,7 @@ namespace CaravelTemplate.WebApi.Controllers
         public async Task<ActionResult<UserModel>> CreateUserAsync(CreateUserCommand create, CancellationToken ct)
         {
             var response = await _mediator.Send(create, ct);
-
+            
             return response.Match(
                 success => CreatedAtRoute(nameof(GetUserAsync), null, success.Response),
                 invalid => BadRequest(invalid.Error)

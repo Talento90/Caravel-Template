@@ -5,6 +5,7 @@ using Caravel;
 using CaravelTemplate.Infrastructure.Logger;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 
 namespace CaravelTemplate.WebApi
@@ -20,12 +21,15 @@ namespace CaravelTemplate.WebApi
             .AddEnvironmentVariables()
             .Build();
 
-        private static IWebHostBuilder CreateWebHostBuilder() =>
-            new WebHostBuilder()
-                .UseKestrel(options => options.AddServerHeader = false)
+        private static IHostBuilder CreateWebHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseConfiguration(Configuration)
-                .UseStartup<Startup>()
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseKestrel(options => options.AddServerHeader = false)
+                        .UseConfiguration(Configuration)
+                        .UseStartup<Startup>();
+                })
                 .UseSerilog();
 
         public static async Task<int> Main(string[] args)
@@ -36,10 +40,10 @@ namespace CaravelTemplate.WebApi
             {
                 Log.Information("Starting Application");
 
-                await CreateWebHostBuilder()
+                await CreateWebHostBuilder(args)
                     .Build()
                     .RunAsync();
-                
+
                 return 0;
             }
             catch (Exception ex)
@@ -50,7 +54,7 @@ namespace CaravelTemplate.WebApi
             }
             finally
             {
-                Log.CloseAndFlush();
+                await Log.CloseAndFlushAsync();
             }
         }
     }

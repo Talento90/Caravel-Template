@@ -2,25 +2,27 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Caravel.AppContext;
+using Caravel.ApplicationContext;
 using Caravel.Entities;
 using CaravelTemplate.Core.Data;
 using CaravelTemplate.Entities;
+using CaravelTemplate.Events;
 using CaravelTemplate.Infrastructure.Authentication;
 using CaravelTemplate.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Newtonsoft.Json;
+using JsonSerializer = Caravel.Http.JsonSerializer;
 
 namespace CaravelTemplate.Infrastructure.Data
 {
     public class CaravelTemplateTemplateDbContext : IdentityDbContext<Identity.User, Role, Guid>,
         ICaravelTemplateDbContext
     {
-        public const string DefaultSchema = "CaravelTemplate";
-
         private readonly IAppContextAccessor _contextAccessor;
         public DbSet<Book> Books { get; set; } = null!;
+        public DbSet<Event> Events { get; set; } = null!;
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
         public CaravelTemplateTemplateDbContext(
@@ -35,8 +37,6 @@ namespace CaravelTemplate.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.HasDefaultSchema(DefaultSchema);
-
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CaravelTemplateTemplateDbContext).Assembly);
 
             NormalizeTableNames(modelBuilder);
@@ -46,12 +46,14 @@ namespace CaravelTemplate.Infrastructure.Data
         public override int SaveChanges()
         {
             AuditEntities();
+            SaveDomainEvents();
             return base.SaveChanges();
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             AuditEntities();
+            SaveDomainEvents();
             return base.SaveChangesAsync(cancellationToken);
         }
 
@@ -90,19 +92,15 @@ namespace CaravelTemplate.Infrastructure.Data
         {
             var userId = _contextAccessor.Context.UserId;
 
-
             var entries = ChangeTracker
                 .Entries()
-                .Where(e => e.Entity is IAuditable && (
-                    e.State == EntityState.Added
-                    || e.State == EntityState.Modified
-                    || e.State == EntityState.Deleted));
+                .Where(e => e.Entity is IAuditable && 
+                            e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted);
 
             foreach (var entityEntry in entries)
             {
-                IEntity entity = (IEntity) entityEntry.Entity;
-
-
+                var entity = (IEntity) entityEntry.Entity;
+                
                 switch (entityEntry.State)
                 {
                     case EntityState.Added:
@@ -132,12 +130,46 @@ namespace CaravelTemplate.Infrastructure.Data
             }
         }
 
+        private void SaveDomainEvents()
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is IAggregateRoot && e.State is 
+                    EntityState.Added or EntityState.Modified or EntityState.Deleted)
+                .ToList();
+
+            foreach (var entityEntry in entries.Where(e => e.State == EntityState.Added))
+            {
+                if (entityEntry.Entity is not IAggregateRoot entity)
+                    continue;
+
+                entity.AddEvent(new CreateEntityEvent(entity));
+            }
+
+            // Save all events
+            foreach (var entry in entries)
+            {
+                if (entry.Entity is not IAggregateRoot entity)
+                    continue;
+
+                foreach (var domainEvent in entity.Events)
+                {
+                    Events.Add(new Event(domainEvent.Name, JsonSerializer.Serialize(domainEvent, new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    })));
+                }
+
+                entity.ClearEvents();
+            }
+        }
+
         private static void NormalizeTableNames(ModelBuilder modelBuilder)
         {
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 var tableName = entityType.GetTableName();
-                
+
                 if (tableName is not null && tableName.StartsWith("AspNet"))
                 {
                     entityType.SetTableName(tableName.Substring(6));

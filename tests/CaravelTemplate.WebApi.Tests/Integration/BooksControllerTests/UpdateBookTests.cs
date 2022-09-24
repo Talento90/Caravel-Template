@@ -17,25 +17,26 @@ using Xunit;
 namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
 {
     [Collection("Integration")]
-    public class UpdateBookTests : IDisposable
+    public class UpdateBookTests : IClassFixture<ServerFixture>, IDisposable
     {
         private const string ApiUrl = "/api/v1/books";
         private readonly ServerFixture _fixture;
-        private readonly Book[] _books;
 
-        public UpdateBookTests()
+        public UpdateBookTests(ServerFixture fixture)
         {
-            _books = FakeData.BookFaker().Generate(1).ToArray();
-            _fixture = new ServerFixture();
-            _fixture.SeedDatabase(_books);
+            _fixture = fixture;
         }
         
         [Fact]
         public async Task Update_Book_Created()
         {
             // Arrange
+            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
-            var book = _books.First();
+            var books = FakeData.BookFaker().Generate(1).ToArray();
+            await _fixture.SeedDatabase(books);
+            
+            var book = books.First();
             var updateBook = new UpdateBookCommand
             {
                 Name = "New Caravel Book",
@@ -58,6 +59,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
         public async Task Update_Book_Not_Found()
         {
             // Arrange
+            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
             var updateBook = new UpdateBookCommand
             {
@@ -80,6 +82,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
         public async Task Update_Book_Bad_Request()
         {
             // Arrange
+            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
             var updateBook = new UpdateBookCommand
             {
@@ -100,7 +103,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
 
         public void Dispose()
         {
-            _fixture?.Dispose();
+            _fixture?.ClearDatabase();
         }
     }
 }

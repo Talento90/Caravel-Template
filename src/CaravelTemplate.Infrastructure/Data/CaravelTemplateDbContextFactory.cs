@@ -1,5 +1,5 @@
 using System;
-using Caravel.AppContext;
+using Caravel.ApplicationContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 

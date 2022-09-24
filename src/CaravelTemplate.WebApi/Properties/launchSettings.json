@@ -23,7 +23,7 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "Database:ConnectionString": "[placeholder]",
+        "Database:ConnectionString": "Host=localhost;Database=caravel;Username=user;Password=password123",
         "LOG_SYSLOG_TAG": "[placeholder]",
         "ASPNETCORE_ENVIRONMENT": "local"
       }

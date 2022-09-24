@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>9</LangVersion>
+        <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
@@ -11,14 +11,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="10.1.1" />
-      <PackageReference Include="Caravel.AspNetCore" Version="0.17.0" />
-      <PackageReference Include="Caravel.MediatR" Version="0.8.0" />
-      <PackageReference Include="FluentValidation" Version="10.3.3" />
-      <PackageReference Include="MediatR" Version="9.0.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-rc.1.21452.10" />
-      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0-rc.1.21451.13" />
-      <PackageReference Include="OneOf" Version="3.0.201" />
+      <PackageReference Include="AutoMapper" Version="11.0.1" />
+      <PackageReference Include="Caravel.AspNetCore" Version="0.20.0" />
+      <PackageReference Include="Caravel.MediatR" Version="0.11.0" />
+      <PackageReference Include="FluentValidation" Version="11.2.2" />
+      <PackageReference Include="MediatR" Version="10.0.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
+      <PackageReference Include="OneOf" Version="3.0.223" />
     </ItemGroup>
 
 </Project>

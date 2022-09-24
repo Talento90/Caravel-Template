@@ -1,11 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Caravel.AppContext;
+using Caravel.ApplicationContext;
 using Caravel.Errors;
 using CaravelTemplate.Core.Identity;
 using MediatR;
-using AppContext = Caravel.AppContext.AppContext;
 
 namespace CaravelTemplate.Core.Users.Queries
 {
@@ -15,7 +14,7 @@ namespace CaravelTemplate.Core.Users.Queries
         {
             private readonly IIdentityService _identityService;
             private readonly IMapper _mapper;
-            private readonly AppContext _appContext;
+            private readonly ApplicationContext _appContext;
 
             public Handler(IIdentityService identityService, IAppContextAccessor appContextAccessor, IMapper mapper)
             {

@@ -3,6 +3,7 @@ using System.Data;
 using System.IO;
 using System.Threading.Tasks;
 using Caravel;
+using Caravel.ApplicationContext;
 using CaravelTemplate.Infrastructure.Data;
 using CaravelTemplate.Infrastructure.Identity;
 using CaravelTemplate.Infrastructure.Logger;
@@ -60,7 +61,7 @@ namespace CaravelTemplate.SetupConsole
             }
             finally
             {
-                Log.CloseAndFlush();
+                await Log.CloseAndFlushAsync();
             }
         }
 
@@ -68,7 +69,11 @@ namespace CaravelTemplate.SetupConsole
             new HostBuilder()
                 .ConfigureAppConfiguration(c => { })
                 .ConfigureLogging(((context, builder) => { builder.AddSerilog(); }))
-                .ConfigureServices(services => { services.ConfigureEntityFramework(Configuration); })
+                .ConfigureServices(services =>
+                {
+                    services.AddTransient<IAppContextAccessor, AppContextAccessor>();
+                    services.ConfigureEntityFramework(Configuration);
+                })
                 .UseSerilog();
     }
 }

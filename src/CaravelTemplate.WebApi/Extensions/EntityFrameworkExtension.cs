@@ -12,19 +12,10 @@ namespace CaravelTemplate.WebApi.Extensions
         public static void ConfigureEntityFramework(this IServiceCollection services, IConfiguration configuration)
         {
             var dbConfig = configuration.GetSection("Database").Get<DatabaseSettings>();
-
-            services.AddScoped<ICaravelTemplateDbContext, CaravelTemplateTemplateDbContext>();
             
             services.AddDbContext<CaravelTemplateTemplateDbContext>(options =>
             {
-                if (dbConfig.IsInMemory)
-                {
-                    options.UseInMemoryDatabase("CaravelTemplateDbContext");
-                }
-                else
-                {
-                    options.UseNpgsql(dbConfig.ConnectionString);
-                }
+                options.UseNpgsql(dbConfig.ConnectionString);
             });
 
             services.AddIdentity<User, Role>(options =>

@@ -56,12 +56,6 @@ docker-compose up
 docker-compose down
 ```
 
-## Generate HTTPS Certificate
-
-```bash
-dotnet dev-certs https -ep "dev-localhost.pfx" -p password123 --trust
-```
-
 ## Entity Framework Migrations
 
 ```bash

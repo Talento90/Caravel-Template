@@ -12,20 +12,22 @@ using Xunit;
 namespace CaravelTemplate.WebApi.Tests.Integration.UsersControllerTests
 {
     [Collection("Integration")]
-    public class CreateUserTests : IDisposable
+    public class CreateUserTests : IClassFixture<ServerFixture>, IDisposable
     {
         private const string ApiUrl = "/api/v1/users";
         private readonly ServerFixture _fixture;
 
-        public CreateUserTests()
+        public CreateUserTests(ServerFixture fixture)
         {
-            _fixture = new ServerFixture();
+            _fixture = fixture;
         }
         
         [Fact]
         public async Task Create_User_Created()
         {
             // Arrange
+            await _fixture.SetupDatabase();
+
             var client = _fixture.Server.CreateClient();
             var createUser = new CreateUserCommand()
             {
@@ -75,7 +77,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.UsersControllerTests
 
         public void Dispose()
         {
-            _fixture?.Dispose();
+            _fixture?.ClearDatabase();
         }
     }
 }
