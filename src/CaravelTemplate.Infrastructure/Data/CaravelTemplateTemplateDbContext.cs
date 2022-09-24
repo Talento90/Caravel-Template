@@ -22,7 +22,7 @@ namespace CaravelTemplate.Infrastructure.Data
     {
         private readonly IAppContextAccessor _contextAccessor;
         public DbSet<Book> Books { get; set; } = null!;
-        public DbSet<Event> Events { get; set; } = null!;
+        public DbSet<Entities.Events> Events { get; set; } = null!;
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
         public CaravelTemplateTemplateDbContext(
@@ -154,7 +154,7 @@ namespace CaravelTemplate.Infrastructure.Data
 
                 foreach (var domainEvent in entity.Events)
                 {
-                    Events.Add(new Event(domainEvent.Name, JsonSerializer.Serialize(domainEvent, new JsonSerializerSettings()
+                    Events.Add(new Entities.Events(domainEvent.Name, JsonSerializer.Serialize(domainEvent, new JsonSerializerSettings()
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     })));
