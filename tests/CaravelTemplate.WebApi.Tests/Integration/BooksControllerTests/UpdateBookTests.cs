@@ -29,7 +29,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
         }
         
         [Fact]
-        public async Task Update_Book_Created()
+        public async Task Update_Book_Success()
         {
             // Arrange
             await _fixture.SetupDatabase();

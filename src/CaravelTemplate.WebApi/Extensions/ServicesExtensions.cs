@@ -20,12 +20,13 @@ namespace CaravelTemplate.WebApi.Extensions
         public static void ConfigureServices(this IServiceCollection services)
         {
             var coreAssembly = typeof(GetBookByIdQuery).Assembly;
+            var identityAssembly = typeof(IdentityService).Assembly;
             
             services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(coreAssembly);
             services.AddAutoMapper(coreAssembly);
-            services.AddMediatR(coreAssembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            services.AddMediatR(coreAssembly, identityAssembly);
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             
             services.AddHttpContextAccessor();
             services.AddScoped<IClock, DateTimeUtcClock>();

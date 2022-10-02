@@ -21,7 +21,7 @@ namespace CaravelTemplate.WebApi.Tests.Fixtures
         public CaravelTemplateTemplateDbContext DbContext =>
             Server.Services.GetService<CaravelTemplateTemplateDbContext>()
             ?? throw new InvalidOperationException();
-        
+
         public CaravelTemplateIdentityDbContext IdentityDbContext =>
             Server.Services.GetService<CaravelTemplateIdentityDbContext>()
             ?? throw new InvalidOperationException();
@@ -41,38 +41,42 @@ namespace CaravelTemplate.WebApi.Tests.Fixtures
             Server = new TestServer(builder);
 
             configuration["Jwt:Audience"] = Server.BaseAddress.ToString();
+
+            IdentityDbContext.Database.Migrate();
+            DbContext.Database.Migrate();
         }
 
         public async Task SetupDatabase()
         {
-            await IdentityDbContext.Database.MigrateAsync()!;
-            await DbContext.Database.MigrateAsync()!;
-            await RoleSeeder.CreateRolesAsync(Server.Services.GetService<RoleManager<Role>>() ??
-                                              throw new InvalidOperationException());
+            using var scope = Server.Services.CreateScope();
+            await RoleSeeder.CreateRolesAsync(scope.ServiceProvider.GetService<RoleManager<Role>>()!);
         }
 
         public async Task ClearDatabase()
         {
             DbContext.RemoveRange(DbContext.Books);
             DbContext.RemoveRange(DbContext.Events);
+            await DbContext.SaveChangesAsync()!;
+
             IdentityDbContext.RemoveRange(IdentityDbContext.Users);
             IdentityDbContext.RemoveRange(IdentityDbContext.UserClaims);
             IdentityDbContext.RemoveRange(IdentityDbContext.UserLogins);
             IdentityDbContext.RemoveRange(IdentityDbContext.UserRoles);
             IdentityDbContext.RemoveRange(IdentityDbContext.UserTokens);
             IdentityDbContext.RemoveRange(IdentityDbContext.RefreshTokens);
-            await DbContext?.SaveChangesAsync()!;
+            await IdentityDbContext.SaveChangesAsync();
         }
 
         public async Task SeedDatabase(IEnumerable<Entity> entities)
         {
-            DbContext?.AddRange(entities);
-            await DbContext?.SaveChangesAsync()!;
+            DbContext.AddRange(entities);
+            await DbContext.SaveChangesAsync()!;
         }
 
         public void Dispose()
         {
-            DbContext?.Database.EnsureDeleted();
+            DbContext.Database.EnsureDeleted();
+            IdentityDbContext.Database.EnsureDeleted();
             Server.Dispose();
         }
     }

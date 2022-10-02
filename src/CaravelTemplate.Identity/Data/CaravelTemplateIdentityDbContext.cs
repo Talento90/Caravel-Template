@@ -33,14 +33,14 @@ public class CaravelTemplateIdentityDbContext : IdentityDbContext<User, Role, Gu
     public override int SaveChanges()
     {
         this.AuditEntities(_contextAccessor);
-        this.SaveDomainEvents<User>(Events);
+        this.CreateAndSaveDomainEvents<User>(Events);
         return base.SaveChanges();
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         this.AuditEntities(_contextAccessor);
-        this.SaveDomainEvents<User>(Events);
+        this.CreateAndSaveDomainEvents<User>(Events);
         return base.SaveChangesAsync(cancellationToken);
     }
     

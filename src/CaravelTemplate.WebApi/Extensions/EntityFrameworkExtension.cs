@@ -1,9 +1,9 @@
 using CaravelTemplate.Identity;
+using CaravelTemplate.Identity.Data;
 using CaravelTemplate.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using User = CaravelTemplate.Entities.User;
 
 namespace CaravelTemplate.WebApi.Extensions
 {
@@ -11,20 +11,30 @@ namespace CaravelTemplate.WebApi.Extensions
     {
         public static void ConfigureEntityFramework(this IServiceCollection services, IConfiguration configuration)
         {
-            var dbConfig = configuration.GetSection("Database").Get<DatabaseSettings>();
-            
             services.AddDbContext<CaravelTemplateTemplateDbContext>(options =>
             {
-                options.UseNpgsql(dbConfig.ConnectionString);
+                var dbConfig = configuration.GetSection("Database").Get<DatabaseSettings>();
+                options.UseNpgsql(dbConfig.ConnectionString, npqOptions =>
+                {
+                    npqOptions.EnableRetryOnFailure();
+                });
             });
 
-            services.AddIdentity<User, Role>(options =>
+            services.AddDbContext<CaravelTemplateIdentityDbContext>(options =>
+                {
+                    var dbConfig = configuration.GetSection("IdentityDatabase").Get<DatabaseSettings>();
+                    options.UseNpgsql(dbConfig.ConnectionString, npqOptions =>
+                    {
+                        npqOptions.EnableRetryOnFailure();
+                    });
+                })
+                .AddIdentity<User, Role>(options =>
                 {
                     options.Password.RequireDigit = true;
                     options.Password.RequiredLength = 8;
                     options.User.RequireUniqueEmail = true;
                 })
-                .AddEntityFrameworkStores<CaravelTemplateTemplateDbContext>();
+                .AddEntityFrameworkStores<CaravelTemplateIdentityDbContext>();
         }
     }
 }

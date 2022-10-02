@@ -32,14 +32,14 @@ namespace CaravelTemplate.Infrastructure.Data
         public override int SaveChanges()
         {
             this.AuditEntities(_contextAccessor);
-            this.SaveDomainEvents<Book>(Events);
+            this.CreateAndSaveDomainEvents<Book>(Events);
             return base.SaveChanges();
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
         {
             this.AuditEntities(_contextAccessor);
-            this.SaveDomainEvents<Book>(Events);
+            this.CreateAndSaveDomainEvents<Book>(Events);
             return base.SaveChangesAsync(cancellationToken);
         }
     }
