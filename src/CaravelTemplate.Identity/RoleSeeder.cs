@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CaravelTemplate.Identity
@@ -7,12 +6,8 @@ namespace CaravelTemplate.Identity
     {
         public static void SeedRoles(this ModelBuilder modelBuilder)
         {
-            var roles = new [] {Identity.Roles.Admin, Identity.Roles.User};
-
-            foreach (var role in roles)
-            {
-                modelBuilder.Entity<Role>().HasData(new Role(role));
-            }
+            modelBuilder.Entity<Role>().HasData(new Role(Guid.Parse("A747465C-F1E5-48BC-9ABE-35D3864C5121"), Roles.Admin));
+            modelBuilder.Entity<Role>().HasData(new Role(Guid.Parse("D433C4EE-E3BA-4C32-83F0-F4283D2D14F7"), Roles.User));
         }
     }
 }

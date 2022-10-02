@@ -2,11 +2,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CaravelTemplate.Identity
 {
-    public class Role : IdentityRole<Guid>
+    public sealed class Role : IdentityRole<Guid>
     {
-        public Role(string name) : base(name)
+        public Role(Guid id, string name) : base(name)
         {
-            
+            Id = id;
+            NormalizedName = Name.ToLower();
         }
     }
 }
