@@ -1,7 +1,7 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Caravel.Errors;
-using Caravel.Functional;
+using CaravelTemplate.Identity;
 using FluentValidation;
 using MediatR;
 
@@ -34,13 +34,10 @@ namespace CaravelTemplate.Core.Authentication.Commands
             {
                 var result = await _authService.LoginUserAsync(request.Username, request.Password, ct);
 
-                return result.Fold<Error, AccessToken, LoginUserCommandResponse>(
-                    err => new LoginUserCommandResponse.InvalidPassword(err),
-                    token => new LoginUserCommandResponse.Success(new AccessTokenModel(
-                        token.Token,
-                        token.ExpiresIn,
-                        token.RefreshToken
-                    )));
+                return result.HasErrors
+                    ? new LoginUserCommandResponse.InvalidPassword(result.Errors.First())
+                    : new LoginUserCommandResponse.Success(new AccessTokenModel(result.Data!.Token,
+                        result.Data.ExpiresIn, result.Data.RefreshToken));
             }
         }
     }

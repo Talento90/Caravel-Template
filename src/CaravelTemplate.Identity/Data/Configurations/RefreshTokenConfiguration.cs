@@ -1,5 +1,5 @@
 using CaravelTemplate.Entities;
-using CaravelTemplate.Infrastructure.Authentication;
+using CaravelTemplate.Identity.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

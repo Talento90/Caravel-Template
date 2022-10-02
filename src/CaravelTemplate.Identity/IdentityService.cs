@@ -1,16 +1,11 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Caravel.Errors;
 using Caravel.Functional;
 using Caravel.MediatR.Security;
-using CaravelTemplate.Core;
-using CaravelTemplate.Core.Identity;
+using CaravelTemplate.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
-namespace CaravelTemplate.Infrastructure.Identity
+namespace CaravelTemplate.Identity
 {
     public class IdentityService : IIdentityService, IAuthorizer
     {
@@ -50,7 +45,7 @@ namespace CaravelTemplate.Infrastructure.Identity
             return result.Succeeded;
         }
 
-        public async Task<Either<Error, Entities.User>> CreateUserAsync(CreateUser createUser)
+        public async Task<Result<Entities.User>> CreateUserAsync(CreateUser createUser)
         {
             var user = new User
             {
@@ -64,7 +59,7 @@ namespace CaravelTemplate.Infrastructure.Identity
 
             if (!result.Succeeded)
             {
-                return Result.Error<Entities.User>(new Error(Errors.UserCreation, "Error creating user.")
+                return Result<Entities.User>.Failure(UserErrors.Create()
                     .SetDetails(string.Join(',', result.Errors.Select(e => e.Description))));
             }
 
@@ -72,46 +67,46 @@ namespace CaravelTemplate.Infrastructure.Identity
 
             if (!rolesResult.Succeeded)
             {
-                return Result.Error<Entities.User>(new Error(Errors.UserCreation, "Error creating user.")
+                return Result<Entities.User>.Failure(UserErrors.Create()
                     .SetDetails(string.Join(',', result.Errors.Select(e => e.Description))));
             }
 
-            return Result.Success(MapUser(user));
+            return Result<Entities.User>.Success(MapUser(user));
         }
 
-        public async Task<Optional<Error>> DeleteUserAsync(Guid userId)
+        public async Task<Result> DeleteUserAsync(Guid userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
 
             if (user == null)
             {
-                return Optional.Some(new Error("user_not_found", "User does not exist"));
+                return Result.Failure(UserErrors.NotFound(userId));
             }
 
             var result = await _userManager.DeleteAsync(user);
 
             return result.Succeeded
-                ? Optional.None<Error>()
-                : Optional.Some(new Error("user_delete", string.Join(",", result.Errors.Select(e => e.Description))));
+                ? Result.Success()
+                : Result.Failure(new Error("user_delete", string.Join(",", result.Errors.Select(e => e.Description))));
         }
 
-        public async Task<Optional<Error>> UpdateUserAsync(Guid userId)
+        public async Task<Result> UpdateUserAsync(Guid userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
 
             if (user == null)
             {
-                return Optional.Some(new Error("user_not_found", "User does not exist"));
+                return Result.Failure(UserErrors.NotFound(userId));
             }
 
             var result = await _userManager.UpdateAsync(user);
 
             return result.Succeeded
-                ? Optional.None<Error>()
-                : Optional.Some(new Error("user_update", string.Join(",", result.Errors.Select(e => e.Description))));
+                ? Result.Success()
+                : Result.Failure(new Error("user_update", string.Join(",", result.Errors.Select(e => e.Description))));
         }
 
-        private static Entities.User MapUser(User user) => new Entities.User()
+        private static Entities.User MapUser(User user) => new()
         {
             Id = user.Id,
             Username = user.UserName,

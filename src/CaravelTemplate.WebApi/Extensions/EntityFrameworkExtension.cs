@@ -1,9 +1,9 @@
-using CaravelTemplate.Core.Data;
+using CaravelTemplate.Identity;
 using CaravelTemplate.Infrastructure.Data;
-using CaravelTemplate.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using User = CaravelTemplate.Entities.User;
 
 namespace CaravelTemplate.WebApi.Extensions
 {

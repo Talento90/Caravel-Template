@@ -65,6 +65,9 @@ dotnet tool install --global dotnet-ef
 # Update dotnet-ef tool
 dotnet tool update --global dotnet-ef
 
-# Run Migration
+# Run DbContext Migration
 dotnet ef migrations add {Migratio Name} --output-dir Data/Migrations --project src/CaravelTemplate.Infrastructure
+
+# Run Identity DbContext Migration
+dotnet ef migrations add {Migratio Name} --output-dir Data/Migrations --project src/CaravelTemplate.Identity
 ```

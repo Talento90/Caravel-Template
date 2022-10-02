@@ -1,11 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Http;
-using CaravelTemplate.Core.Identity;
 using CaravelTemplate.Core.Users;
 using CaravelTemplate.Core.Users.Commands;
 using CaravelTemplate.Core.Users.Queries;
 using CaravelTemplate.Entities;
+using CaravelTemplate.Identity;
 using CaravelTemplate.WebApi.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

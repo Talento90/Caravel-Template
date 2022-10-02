@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Caravel.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace CaravelTemplate.Infrastructure.Identity
+namespace CaravelTemplate.Identity
 {
     public class User : IdentityUser<Guid>, IAggregateRoot, IAuditable
     {

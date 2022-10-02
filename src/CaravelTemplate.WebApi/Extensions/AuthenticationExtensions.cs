@@ -4,7 +4,7 @@ using System.Text;
 using Caravel.AspNetCore.Authentication;
 using Caravel.AspNetCore.Http;
 using Caravel.Errors;
-using CaravelTemplate.Core.Identity;
+using CaravelTemplate.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

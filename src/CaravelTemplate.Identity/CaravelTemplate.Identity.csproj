@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Caravel" Version="0.21.0" />
+      <PackageReference Include="Caravel.AspNetCore" Version="0.20.0" />
+      <PackageReference Include="Caravel.EntityFramework" Version="0.1.0" />
+      <PackageReference Include="Caravel.MediatR" Version="0.11.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CaravelTemplate\CaravelTemplate.csproj" />
+    </ItemGroup>
+
+</Project>

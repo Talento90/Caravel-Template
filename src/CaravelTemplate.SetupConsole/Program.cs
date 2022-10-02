@@ -2,10 +2,10 @@
 using System.Data;
 using System.IO;
 using System.Threading.Tasks;
-using Caravel;
 using Caravel.ApplicationContext;
+using CaravelTemplate.Identity;
+using CaravelTemplate.Identity.Data;
 using CaravelTemplate.Infrastructure.Data;
-using CaravelTemplate.Infrastructure.Identity;
 using CaravelTemplate.Infrastructure.Logger;
 using CaravelTemplate.WebApi.Extensions;
 using Microsoft.AspNetCore.Identity;
@@ -38,10 +38,12 @@ namespace CaravelTemplate.SetupConsole
                     .Build();
                 
                 var dbContext = host.Services.GetService<CaravelTemplateTemplateDbContext>() ?? throw new NoNullAllowedException();
+                var identityDbContext = host.Services.GetService<CaravelTemplateIdentityDbContext>() ?? throw new NoNullAllowedException();
 
                 Log.Information("Apply Database Migrations");
 
                 await dbContext.Database.MigrateAsync();
+                await identityDbContext.Database.MigrateAsync();
                 
                 Log.Information("Seed Database");
                 

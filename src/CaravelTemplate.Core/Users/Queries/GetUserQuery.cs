@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Caravel.ApplicationContext;
 using Caravel.Errors;
-using CaravelTemplate.Core.Identity;
+using CaravelTemplate.Errors;
+using CaravelTemplate.Identity;
 using MediatR;
 
 namespace CaravelTemplate.Core.Users.Queries
@@ -25,12 +26,11 @@ namespace CaravelTemplate.Core.Users.Queries
 
             public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken ct)
             {
-                var user = await _identityService.GetUserByIdAsync(_appContext.UserId!.Value);
+                var userId = _appContext.UserId!.Value;
+                var user = await _identityService.GetUserByIdAsync(userId);
 
                 if (user == null)
-                    return new GetUserResponse.NotFound(
-                        new Error(Errors.UserNotFound, "User does not exist.")
-                    );
+                    return new GetUserResponse.NotFound(UserErrors.NotFound(userId));
 
                 return new GetUserResponse.Success(_mapper.Map<UserModel>(user));
             }

@@ -1,7 +1,7 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Caravel.Errors;
-using Caravel.Functional;
+using CaravelTemplate.Identity;
 using FluentValidation;
 using MediatR;
 
@@ -34,13 +34,13 @@ namespace CaravelTemplate.Core.Authentication.Commands
             {
                 var result = await _authService.RefreshTokenAsync(request.AccessToken, request.RefreshToken, ct);
 
-                return result.Fold<Error, AccessToken, RefreshTokenCommandResponse>(
-                    err => new RefreshTokenCommandResponse.InvalidAccessToken(err),
-                    token => new RefreshTokenCommandResponse.Success(new AccessTokenModel(
-                        token.Token,
-                        token.ExpiresIn,
-                        token.RefreshToken
-                    )));
+                return result.HasErrors ?
+                    new RefreshTokenCommandResponse.InvalidAccessToken(result.Errors.First()) :
+                    new RefreshTokenCommandResponse.Success(new AccessTokenModel(
+                        result.Data.Token,
+                        result.Data.ExpiresIn,
+                        result.Data.RefreshToken
+                    ));
             }
         }
     }

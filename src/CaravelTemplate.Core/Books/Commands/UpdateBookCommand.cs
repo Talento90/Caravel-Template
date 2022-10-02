@@ -2,8 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Caravel.Errors;
-using CaravelTemplate.Core.Data;
+using CaravelTemplate.Errors;
+using CaravelTemplate.Repositories;
 using FluentValidation;
 using MediatR;
 
@@ -32,30 +32,28 @@ namespace CaravelTemplate.Core.Books.Commands
         
         public class Handler : IRequestHandler<UpdateBookCommand, UpdateBookCommandResponse>
         {
-            private readonly ICaravelTemplateDbContext _templateDbContext;
+            private readonly IUnitOfWork _uow;
             private readonly IMapper _mapper;
             
-            public Handler(ICaravelTemplateDbContext templateDbContext, IMapper mapper)
+            public Handler(IUnitOfWork uow, IMapper mapper)
             {
-                _templateDbContext = templateDbContext;
+                _uow = uow;
                 _mapper = mapper;
             }
             
             public async Task<UpdateBookCommandResponse> Handle(UpdateBookCommand request, CancellationToken ct)
             {
-                var book = await _templateDbContext.Books.FindAsync(request.Id);
+                var book = await _uow.BookRepository.GetBook(request.Id, ct);
 
                 if (book == null)
                 {
-                    return new UpdateBookCommandResponse.NotFound(
-                        new Error(Errors.BookNotFound, $"Book {request.Id} does not exist")
-                    );
+                    return new UpdateBookCommandResponse.NotFound(BookErrors.NotFound(request.Id));
                 }
 
                 book.Name = request.Name ?? book.Name;
                 book.Description = request.Description;
-                
-                await _templateDbContext.SaveChangesAsync(ct);
+
+                await _uow.SaveChangesAsync(ct);
 
                 return new UpdateBookCommandResponse.Success(
                     _mapper.Map<BookModel>(book));

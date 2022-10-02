@@ -1,10 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Caravel.Entities;
+using CaravelTemplate.Identity;
+using CaravelTemplate.Identity.Data;
 using CaravelTemplate.Infrastructure.Data;
-using CaravelTemplate.Infrastructure.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.TestHost;
@@ -20,6 +20,10 @@ namespace CaravelTemplate.WebApi.Tests.Fixtures
 
         public CaravelTemplateTemplateDbContext DbContext =>
             Server.Services.GetService<CaravelTemplateTemplateDbContext>()
+            ?? throw new InvalidOperationException();
+        
+        public CaravelTemplateIdentityDbContext IdentityDbContext =>
+            Server.Services.GetService<CaravelTemplateIdentityDbContext>()
             ?? throw new InvalidOperationException();
 
         public ServerFixture()
@@ -41,6 +45,7 @@ namespace CaravelTemplate.WebApi.Tests.Fixtures
 
         public async Task SetupDatabase()
         {
+            await IdentityDbContext.Database.MigrateAsync()!;
             await DbContext.Database.MigrateAsync()!;
             await RoleSeeder.CreateRolesAsync(Server.Services.GetService<RoleManager<Role>>() ??
                                               throw new InvalidOperationException());
@@ -50,12 +55,12 @@ namespace CaravelTemplate.WebApi.Tests.Fixtures
         {
             DbContext.RemoveRange(DbContext.Books);
             DbContext.RemoveRange(DbContext.Events);
-            DbContext.RemoveRange(DbContext.Users);
-            DbContext.RemoveRange(DbContext.UserClaims);
-            DbContext.RemoveRange(DbContext.UserLogins);
-            DbContext.RemoveRange(DbContext.UserRoles);
-            DbContext.RemoveRange(DbContext.UserTokens);
-            DbContext.RemoveRange(DbContext.RefreshTokens);
+            IdentityDbContext.RemoveRange(IdentityDbContext.Users);
+            IdentityDbContext.RemoveRange(IdentityDbContext.UserClaims);
+            IdentityDbContext.RemoveRange(IdentityDbContext.UserLogins);
+            IdentityDbContext.RemoveRange(IdentityDbContext.UserRoles);
+            IdentityDbContext.RemoveRange(IdentityDbContext.UserTokens);
+            IdentityDbContext.RemoveRange(IdentityDbContext.RefreshTokens);
             await DbContext?.SaveChangesAsync()!;
         }
 

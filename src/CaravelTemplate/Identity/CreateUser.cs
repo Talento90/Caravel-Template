@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CaravelTemplate.Core.Identity
+namespace CaravelTemplate.Identity
 {
     public record CreateUser(
         string Username,

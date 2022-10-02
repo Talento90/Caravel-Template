@@ -10,6 +10,7 @@ using CaravelTemplate.Core;
 using CaravelTemplate.Core.Books;
 using CaravelTemplate.Core.Books.Commands;
 using CaravelTemplate.Entities;
+using CaravelTemplate.Errors;
 using CaravelTemplate.WebApi.Tests.Fixtures;
 using FluentAssertions;
 using Xunit;
@@ -61,6 +62,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
             // Arrange
             await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
+            var bookId = Guid.NewGuid();
             var updateBook = new UpdateBookCommand
             {
                 Name = "New Caravel Book",
@@ -68,14 +70,14 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
             };
 
             // Act
-            var response = await client.PutJsonAsync($"{ApiUrl}/{Guid.NewGuid()}", updateBook);
+            var response = await client.PutJsonAsync($"{ApiUrl}/{bookId}", updateBook);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
             var error = await response.Content.ReadAsJsonAsync<HttpError>();
 
-            error.Code.Should().Be(Errors.BookNotFound);
+            error.Code.Should().Be(BookErrors.NotFound(bookId).Code);
         }
         
         [Fact]
@@ -98,7 +100,7 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
 
             var error = await response.Content.ReadAsJsonAsync<HttpError>();
 
-            error.Code.Should().Be(Errors.InvalidFields);
+            error.Code.Should().Be("invalid_fields");
         }
 
         public void Dispose()

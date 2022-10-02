@@ -1,8 +1,6 @@
-using System.Threading.Tasks;
-using CaravelTemplate.Core.Identity;
 using Microsoft.AspNetCore.Identity;
 
-namespace CaravelTemplate.Infrastructure.Identity
+namespace CaravelTemplate.Identity
 {
     public static class RoleSeeder
     {

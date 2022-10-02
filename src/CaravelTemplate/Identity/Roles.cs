@@ -1,4 +1,4 @@
-namespace CaravelTemplate.Core.Identity
+namespace CaravelTemplate.Identity
 {
     public static class Roles
     {

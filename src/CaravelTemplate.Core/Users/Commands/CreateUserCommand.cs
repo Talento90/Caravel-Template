@@ -1,10 +1,11 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Caravel.Errors;
 using Caravel.Functional;
-using CaravelTemplate.Core.Identity;
 using CaravelTemplate.Entities;
+using CaravelTemplate.Identity;
 using FluentValidation;
 using MediatR;
 
@@ -49,7 +50,7 @@ namespace CaravelTemplate.Core.Users.Commands
 
             public async Task<CreateUserCommandResponse> Handle(CreateUserCommand request, CancellationToken ct)
             {
-                Either<Error, User> result = await _identityService.CreateUserAsync(new CreateUser(
+                var result = await _identityService.CreateUserAsync(new CreateUser(
                     request.Username,
                     request.FirstName,
                     request.LastName,
@@ -58,10 +59,9 @@ namespace CaravelTemplate.Core.Users.Commands
                     new [] {Roles.User}
                     ));
 
-                return result.Fold<Error, User, CreateUserCommandResponse>(
-                    (Error err) => new CreateUserCommandResponse.InvalidUser(err),
-                        (User user) => new CreateUserCommandResponse.Success(_mapper.Map<UserModel>(user))
-                    );
+                return result.HasErrors ?
+                    new CreateUserCommandResponse.InvalidUser(result.Errors.First()) :
+                    new CreateUserCommandResponse.Success(_mapper.Map<UserModel>(result.Data));
             }
         }
     }

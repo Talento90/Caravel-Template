@@ -1,7 +1,6 @@
-using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace CaravelTemplate.Infrastructure.Identity
+namespace CaravelTemplate.Identity
 {
     public class Role : IdentityRole<Guid>
     {

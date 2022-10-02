@@ -9,6 +9,7 @@ using CaravelTemplate.Core;
 using CaravelTemplate.Core.Books;
 using CaravelTemplate.Core.Books.Commands;
 using CaravelTemplate.Entities;
+using CaravelTemplate.Errors;
 using CaravelTemplate.WebApi.Tests.Fixtures;
 using FluentAssertions;
 using Xunit;
@@ -57,16 +58,17 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
             // Arrange
             await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
-            
+            var bookId = Guid.NewGuid();
+
             // Act
-            var response = await client.GetAsync($"{ApiUrl}/{Guid.NewGuid()}");
+            var response = await client.GetAsync($"{ApiUrl}/{bookId}");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
             var error = await response.Content.ReadAsJsonAsync<HttpError>();
 
-            error.Code.Should().Be(Errors.BookNotFound);
+            error.Code.Should().Be(BookErrors.NotFound(bookId).Code);
         }
 
         public void Dispose()

@@ -1,11 +1,10 @@
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using CaravelTemplate.Core.Data;
+using CaravelTemplate.Repositories;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CaravelTemplate.Core.Books.Queries
 {
@@ -34,24 +33,19 @@ namespace CaravelTemplate.Core.Books.Queries
 
         public class Handler : IRequestHandler<GetBooksQuery, GetBooksQueryResponse>
         {
-            private readonly ICaravelTemplateDbContext _templateDbContext;
+            private readonly IUnitOfWork _uow;
             private readonly IMapper _mapper;
 
-            public Handler(ICaravelTemplateDbContext templateDbContext, IMapper mapper)
+            public Handler(IUnitOfWork uow, IMapper mapper)
             {
-                _templateDbContext = templateDbContext;
+                _uow = uow;
                 _mapper = mapper;
             }
 
             public async Task<GetBooksQueryResponse> Handle(GetBooksQuery request, CancellationToken ct)
             {
-                var books = await _mapper.ProjectTo<BookModel>(
-                    _templateDbContext.Books
-                        .Skip(request.Skip)
-                        .Take(request.Page)
-                ).ToListAsync(ct);
-                
-                return new GetBooksQueryResponse.Success(books);
+                var books = await _uow.BookRepository.GetBooks(request.Skip, request.Page, ct);
+                return new GetBooksQueryResponse.Success(_mapper.Map<IEnumerable<BookModel>>(books));
             }
         }
     }

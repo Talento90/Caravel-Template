@@ -1,8 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using CaravelTemplate.Core.Data;
 using CaravelTemplate.Entities;
+using CaravelTemplate.Repositories;
 using FluentValidation;
 using MediatR;
 
@@ -26,12 +26,12 @@ namespace CaravelTemplate.Core.Books.Commands
         
         public class Handler : IRequestHandler<CreateBookCommand, CreateBookCommandResponse>
         {
-            private readonly ICaravelTemplateDbContext _templateDbContext;
+            private readonly IUnitOfWork _uow;
             private readonly IMapper _mapper;
             
-            public Handler(ICaravelTemplateDbContext templateDbContext, IMapper mapper)
+            public Handler(IUnitOfWork uow, IMapper mapper)
             {
-                _templateDbContext = templateDbContext;
+                _uow = uow;
                 _mapper = mapper;
             }
             
@@ -39,8 +39,8 @@ namespace CaravelTemplate.Core.Books.Commands
             {
                 var book = _mapper.Map<Book>(request);
 
-                await _templateDbContext.Books.AddAsync(book, ct);
-                await _templateDbContext.SaveChangesAsync(ct);
+                await _uow.BookRepository.CreateBook(book, ct);
+                await _uow.SaveChangesAsync(ct);
                 
                 return new CreateBookCommandResponse.Success(_mapper.Map<BookModel>(book));
             }

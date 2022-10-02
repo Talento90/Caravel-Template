@@ -3,13 +3,11 @@ using Caravel.AspNetCore.Authentication;
 using Caravel.Clock;
 using Caravel.MediatR.Behaviours;
 using Caravel.MediatR.Security;
-using CaravelTemplate.Core.Authentication;
 using CaravelTemplate.Core.Books.Queries;
-using CaravelTemplate.Core.Data;
-using CaravelTemplate.Core.Identity;
-using CaravelTemplate.Infrastructure.Authentication;
-using CaravelTemplate.Infrastructure.Data;
-using CaravelTemplate.Infrastructure.Identity;
+using CaravelTemplate.Identity;
+using CaravelTemplate.Identity.Authentication;
+using CaravelTemplate.Infrastructure.Data.Repositories;
+using CaravelTemplate.Repositories;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -37,7 +35,9 @@ namespace CaravelTemplate.WebApi.Extensions
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAuthorizer, IdentityService>();
-            services.AddScoped<ICaravelTemplateDbContext, CaravelTemplateTemplateDbContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            
         }
     }
 }
