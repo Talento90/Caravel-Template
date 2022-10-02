@@ -7,7 +7,7 @@ namespace CaravelTemplate.Identity
         public Role(Guid id, string name) : base(name)
         {
             Id = id;
-            NormalizedName = Name.ToLower();
+            NormalizedName = Name.ToUpper();
         }
     }
 }
