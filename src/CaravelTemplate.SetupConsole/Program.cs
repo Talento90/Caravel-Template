@@ -45,12 +45,6 @@ namespace CaravelTemplate.SetupConsole
                 await dbContext.Database.MigrateAsync();
                 await identityDbContext.Database.MigrateAsync();
                 
-                Log.Information("Seed Database");
-                
-                var roleManager = host.Services.GetRequiredService<RoleManager<Role>>();
-
-                await RoleSeeder.CreateRolesAsync(roleManager);
-
                 Log.Information("Setup Completed");
 
                 return 0;

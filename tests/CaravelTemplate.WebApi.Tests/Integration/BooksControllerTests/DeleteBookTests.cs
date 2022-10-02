@@ -31,7 +31,6 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
         public async Task Delete_Book_No_Content()
         {
             // Arrange
-            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
             
             var books = FakeData.BookFaker().Generate(1).ToArray();
@@ -51,7 +50,6 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
         public async Task Delete_Book_Not_Found()
         {
             // Arrange
-            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
             var bookId = Guid.NewGuid();
             // Act

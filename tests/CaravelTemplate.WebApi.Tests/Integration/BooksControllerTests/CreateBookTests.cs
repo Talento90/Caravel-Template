@@ -27,7 +27,6 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
         public async Task Create_Book_Created()
         {
             // Arrange
-            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
             var createBook = new CreateBookCommand
             {
@@ -51,7 +50,6 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
         public async Task Create_Book_Missing_Name_Bad_Request()
         {
             // Arrange
-            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
             var createBook = new CreateBookCommand
             {

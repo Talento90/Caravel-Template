@@ -26,8 +26,6 @@ namespace CaravelTemplate.WebApi.Tests.Integration.UsersControllerTests
         public async Task Create_User_Created()
         {
             // Arrange
-            await _fixture.SetupDatabase();
-
             var client = _fixture.Server.CreateClient();
             var createUser = new CreateUserCommand()
             {

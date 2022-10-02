@@ -28,7 +28,6 @@ namespace CaravelTemplate.WebApi.Tests.Integration.AuthControllerTests
         public async Task Login_User_Success()
         {
             // Arrange
-            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
 
             var user = await FakeUser.CreateAsync(client);
@@ -64,7 +63,6 @@ namespace CaravelTemplate.WebApi.Tests.Integration.AuthControllerTests
         public async Task Login_User_With_Invalid_Access_Token_Should_Return_Unauthorized()
         {
             // Arrange
-            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
 
             var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";

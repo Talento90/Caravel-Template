@@ -28,6 +28,7 @@ public class CaravelTemplateIdentityDbContext : IdentityDbContext<User, Role, Gu
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CaravelTemplateIdentityDbContext).Assembly);
         NormalizeTableNames(modelBuilder);
         modelBuilder.ApplyUtcDateConverter();
+        modelBuilder.SeedRoles();
     }
 
     public override int SaveChanges()

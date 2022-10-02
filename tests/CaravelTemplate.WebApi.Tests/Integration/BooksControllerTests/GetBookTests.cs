@@ -32,7 +32,6 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
         public async Task Get_Book_Ok()
         {
             // Arrange
-            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
             var books = FakeData.BookFaker().Generate(1).ToArray();
             await _fixture.SeedDatabase(books);
@@ -56,7 +55,6 @@ namespace CaravelTemplate.WebApi.Tests.Integration.BooksControllerTests
         public async Task Get_Book_Not_Found()
         {
             // Arrange
-            await _fixture.SetupDatabase();
             var client = _fixture.Server.CreateClient();
             var bookId = Guid.NewGuid();
 

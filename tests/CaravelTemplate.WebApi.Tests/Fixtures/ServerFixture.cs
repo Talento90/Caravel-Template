@@ -46,12 +46,6 @@ namespace CaravelTemplate.WebApi.Tests.Fixtures
             DbContext.Database.Migrate();
         }
 
-        public async Task SetupDatabase()
-        {
-            using var scope = Server.Services.CreateScope();
-            await RoleSeeder.CreateRolesAsync(scope.ServiceProvider.GetService<RoleManager<Role>>()!);
-        }
-
         public async Task ClearDatabase()
         {
             DbContext.RemoveRange(DbContext.Books);
