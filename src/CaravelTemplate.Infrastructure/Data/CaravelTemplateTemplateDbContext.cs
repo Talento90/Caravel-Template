@@ -10,12 +10,12 @@ namespace CaravelTemplate.Infrastructure.Data
 {
     public class CaravelTemplateTemplateDbContext : DbContext
     {
-        private readonly IAppContextAccessor _contextAccessor;
+        private readonly IApplicationContextAccessor _contextAccessor;
         public DbSet<Book> Books { get; set; } = null!;
         public DbSet<EntityEvent> Events { get; set; } = null!;
         public CaravelTemplateTemplateDbContext(
             DbContextOptions<CaravelTemplateTemplateDbContext> options,
-            IAppContextAccessor appContextAccessor
+            IApplicationContextAccessor appContextAccessor
         ) : base(options)
         {
             _contextAccessor = appContextAccessor;

@@ -15,7 +15,7 @@ namespace CaravelTemplate.Infrastructure.Data
            
             options.UseNpgsql(connectionString);
             
-            return new CaravelTemplateTemplateDbContext(options.Options, new AppContextAccessor());
+            return new CaravelTemplateTemplateDbContext(options.Options, new ApplicationContextAccessor());
         }
     }
 }
