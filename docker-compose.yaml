@@ -1,12 +1,29 @@
-version: "3.7"
-
 services:
  postgres-db:
-   image: postgres:13
+   image: postgres:16
    restart: always
    environment:
      POSTGRES_DB: caravel
      POSTGRES_USER: user
      POSTGRES_PASSWORD: password123
+     POSTGRES_HOST_AUTH_METHOD: trust
    ports:
-     - 5432:5432
+     - "5432:5432"
+       
+ rabbitmq:
+   image: rabbitmq:3-management-alpine
+   restart: always
+   environment:
+     RABBITMQ_DEFAULT_USER: guest
+     RABBITMQ_DEFAULT_PASS: guest
+     RABBITMQ_DEFAULT_VHOST: "/"
+   ports:
+     - "5672:5672"
+     - "15672:15672"
+ 
+ aspire-dashboard:
+   image: mcr.microsoft.com/dotnet/aspire-dashboard:8.1
+   restart: always
+   ports:
+     - "5001:18889"  # specifies the OTLP endpoint. This endpoint hosts an OTLP service and receives telemetry using gRPC.
+     - "18888:18888"  # Endpoints through which the dashboard frontend is served.
