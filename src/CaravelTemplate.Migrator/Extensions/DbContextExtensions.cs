@@ -11,7 +11,7 @@ namespace CaravelTemplate.Migrator.Extensions;
 
 public static class DbContextExtensions
 {
-    public static void RegisterApplicationDbContext(
+    public static void AddApplicationDbContext(
         this IServiceCollection services,
         ConfigurationManager configuration)
     {
@@ -33,7 +33,7 @@ public static class DbContextExtensions
         });
     }
     
-    public static void RegisterQuartzDbContext(
+    public static void AddQuartzDbContext(
         this IServiceCollection services,
         ConfigurationManager configuration)
     {
@@ -55,7 +55,7 @@ public static class DbContextExtensions
         });
     }
     
-    public static void RegisterIdentityDbContext(
+    public static void AddIdentityDbContext(
         this IServiceCollection services,
         ConfigurationManager configuration)
     {

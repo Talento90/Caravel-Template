@@ -1,59 +1,32 @@
 using CaravelTemplate.Adapter.Api;
 using CaravelTemplate.Adapter.Identity;
-using CaravelTemplate.Adapter.MassTransit;
 using CaravelTemplate.Adapter.PostgreSql;
 using CaravelTemplate.Adapter.PostgreSql.Repositories;
-using CaravelTemplate.Adapter.Quartz;
 using CaravelTemplate.Application.Data;
 using CaravelTemplate.Application.Metrics;
+using CaravelTemplate.Host.Extensions;
 using Serilog;
-
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json")
-    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true)
-    .AddEnvironmentVariables()
-    .Build();
-
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(configuration)
-    .CreateLogger();
 
 try
 {
     var webApi = new ApiServer(args, (builder) =>
     {
-        // Logging
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Configuration)
+            .CreateLogger();
+        
         builder.Logging.ClearProviders();
         builder.Services.AddSerilog();
         
         builder.Services.AddSingleton<BookMetrics>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<IBookRepository, BookRepository>();
-
-        // Database
-        var postgreOption = builder.Configuration
-                                .GetSection("PostgreSql")
-                                .Get<PostgreSqlOptions>() ?? throw new NullReferenceException(nameof(PostgreSqlOptions));
-        builder.Services.RegisterPostgreSql(postgreOption);
-
-        // Quartz
-        var quartzOption = builder.Configuration
-            .GetSection("Quartz")
-            .Get<QuartzOptions>() ?? throw new NullReferenceException(nameof(QuartzOptions));
-        builder.Services.RegisterQuartz(quartzOption);
-
-        // Identity
-        var identityOption = builder.Configuration
-            .GetSection("Identity")
-            .Get<IdentityOptions>() ?? throw new NullReferenceException(nameof(IdentityOptions));
-        builder.Services.RegisterIdentity(identityOption);
-
-        // MassTransit
-        var massTransitOption = builder.Configuration
-            .GetSection("MassTransit")
-            .Get<MassTransitOptions>() ?? throw new NullReferenceException(nameof(MassTransitOptions));
-        builder.Services.RegisterMassTransit(massTransitOption);
+        
+        builder.Services.AddAdapterPostgreSql(builder.Configuration);
+        builder.Services.AddQuartzAdapter(builder.Configuration);
+        builder.Services.AddIdentityAdapter(builder.Configuration);
+        builder.Services.AddMassTransitAdapter(builder.Configuration);
+        builder.Services.AddOpenTelemetry(builder.Configuration, builder.Environment);
     }, (application =>
     {
         // Map Custom Endpoints

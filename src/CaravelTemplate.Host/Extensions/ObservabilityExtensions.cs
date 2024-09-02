@@ -4,7 +4,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
-namespace CaravelTemplate.Adapter.Api.Extensions;
+namespace CaravelTemplate.Host.Extensions;
 
 // Useful documentation: https://learn.microsoft.com/en-us/dotnet/core/diagnostics/observability-with-otel
 // The .NET OTel implementation uses these platform APIs for instrumentation:
@@ -14,16 +14,12 @@ namespace CaravelTemplate.Adapter.Api.Extensions;
 
 public static class ObservabilityExtensions
 {
-    public static void AddOpenTelemetry(this IHostApplicationBuilder builder)
-    {   
-        // We are using Serilog OpenTelemetry Sink
-        // builder.Logging.AddOpenTelemetry(options =>
-        // {
-        //     options.IncludeScopes = true;
-        //     options.IncludeFormattedMessage = true;
-        // });
-
-        builder.Services.AddOpenTelemetry()
+    public static void AddOpenTelemetry(
+        this IServiceCollection services,
+        IConfigurationManager configuration,
+        IHostEnvironment environment)
+    {
+        services.AddOpenTelemetry()
             // Configure OpenTelemetry Resources with the application name
             .ConfigureResource(resource => resource
                 .AddService(
@@ -31,11 +27,10 @@ public static class ObservabilityExtensions
                     serviceVersion: "1.0.0",
                     serviceInstanceId: Environment.MachineName
                 ).AddAttributes([
-                    new KeyValuePair<string, object>("environment", builder.Environment.EnvironmentName)
+                    new KeyValuePair<string, object>("environment", environment.EnvironmentName)
                 ])
             )
-            
-            
+
             // Add Metrics for ASP.NET Core and our custom metrics and export to Prometheus
             .WithMetrics(metrics =>
                 {
@@ -58,29 +53,29 @@ public static class ObservabilityExtensions
                     .AddEntityFrameworkCoreInstrumentation()
                     .AddSource("MassTransit")
                     .AddSource(ObservabilityTags.ApplicationActivitySource);
-                
-                if (builder.Environment.IsDevelopment())
+
+                if (environment.IsDevelopment())
                 {
                     tracing.SetSampler<AlwaysOnSampler>();
                 }
             });
 
-        var otlpEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
+        var otlpEndpoint = configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
 
         if (!string.IsNullOrEmpty(otlpEndpoint))
         {
-            builder.Services.Configure<OpenTelemetryLoggerOptions>(options => { options.AddOtlpExporter(); });
-            builder.Services.ConfigureOpenTelemetryMeterProvider((provider) => { provider.AddOtlpExporter(); });
-            builder.Services.ConfigureOpenTelemetryTracerProvider((provider) => { provider.AddOtlpExporter(); });
+            services.Configure<OpenTelemetryLoggerOptions>(options => { options.AddOtlpExporter(); });
+            services.ConfigureOpenTelemetryMeterProvider((provider) => { provider.AddOtlpExporter(); });
+            services.ConfigureOpenTelemetryTracerProvider((provider) => { provider.AddOtlpExporter(); });
         }
         else
         {
-            builder.Services.Configure<OpenTelemetryLoggerOptions>(options => { options.AddConsoleExporter(); });
-            builder.Services.ConfigureOpenTelemetryMeterProvider((provider) => { provider.AddConsoleExporter(); });
-            builder.Services.ConfigureOpenTelemetryTracerProvider((provider) => { provider.AddConsoleExporter(); });
+            services.Configure<OpenTelemetryLoggerOptions>(options => { options.AddConsoleExporter(); });
+            services.ConfigureOpenTelemetryMeterProvider((provider) => { provider.AddConsoleExporter(); });
+            services.ConfigureOpenTelemetryTracerProvider((provider) => { provider.AddConsoleExporter(); });
         }
-        
+
         // Configure Metrics services
-        builder.Services.AddSingleton<BookMetrics>();
+        services.AddSingleton<BookMetrics>();
     }
 }

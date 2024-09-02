@@ -22,7 +22,6 @@ public class ApiServer
             .AddFeatureManagement(builder.Configuration.GetSection("FeatureManagement"))
             .AddFeatureFilter<PercentageFilter>();
 
-        builder.AddOpenTelemetry();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddOpenApi();
         builder.Services.AddApiVersioning(options =>

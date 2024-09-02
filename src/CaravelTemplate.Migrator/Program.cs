@@ -11,9 +11,9 @@ try
 {
     Log.Information("Starting up Migrator");
 
-    builder.Services.RegisterApplicationDbContext(builder.Configuration);
-    builder.Services.RegisterQuartzDbContext(builder.Configuration);
-    builder.Services.RegisterIdentityDbContext(builder.Configuration);
+    builder.Services.AddApplicationDbContext(builder.Configuration);
+    builder.Services.AddQuartzDbContext(builder.Configuration);
+    builder.Services.AddIdentityDbContext(builder.Configuration);
 
     builder.Build();
 

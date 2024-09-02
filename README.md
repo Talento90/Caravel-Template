@@ -12,6 +12,8 @@ This template uses Caravel package as an SDK and it bootstraps a full functional
 * CaravelTemplate.Host (The program entry point that glues all the adapters and server)
 * CaravelTemplate.Migrator (A slim program to handle entity framework migrations)
 
+![architecture](./assets/architecture.png)
+
 ### Features
 
 * [Caravel SDK](https://github.com/talento90/caravel) (Errors, Middleware, Exceptions)
@@ -28,6 +30,9 @@ This template uses Caravel package as an SDK and it bootstraps a full functional
 * Logging using [Serilog](https://serilog.net/)
 * Testing using [Bogus](https://github.com/bchavez/Bogus) (Fake data generator) + [Fluent Assertions](https://fluentassertions.com/) + [Test Containers](https://github.com/testcontainers/testcontainers-dotnet)
 
+
+### Aspire Dashboard
+![telemetry](./assets/telemetry.png)
 
 ## Installation
 
