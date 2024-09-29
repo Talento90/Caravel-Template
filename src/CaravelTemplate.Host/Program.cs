@@ -23,13 +23,14 @@ try
         builder.Services.AddScoped<IBookRepository, BookRepository>();
         
         builder.Services.AddAdapterPostgreSql(builder.Configuration);
-        builder.Services.AddQuartzAdapter(builder.Configuration);
         builder.Services.AddIdentityAdapter(builder.Configuration);
-        builder.Services.AddMassTransitAdapter(builder.Configuration);
         builder.Services.AddOpenTelemetry(builder.Configuration, builder.Environment);
+        
+        //builder.Services.AddQuartzAdapter(builder.Configuration);
+        //builder.Services.AddMassTransitAdapter(builder.Configuration);
     }, (application =>
     {
-        // Map Custom Endpoints
+        // Map other modules endpoints
         application.MapIdentityEndpoints();
     }));
 
@@ -45,3 +46,7 @@ finally
 {
     await Log.CloseAndFlushAsync();
 }
+
+
+// This dummy class is needed for integration tests WebApplicationFactory
+public partial class Program { }

@@ -6,9 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CEF340C6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate", "src\CaravelTemplate\CaravelTemplate.csproj", "{BE3CC293-8C8C-4079-A23C-C124960D43FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Tests", "tests\CaravelTemplate.Tests\CaravelTemplate.Tests.csproj", "{E634EDEA-FA06-4735-A7CE-B4FB67472C0B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Application.Tests", "tests\CaravelTemplate.Application.Tests\CaravelTemplate.Application.Tests.csproj", "{8CAA646D-2768-4066-A40C-6964788D1815}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.UnitTests", "tests\CaravelTemplate.UnitTests\CaravelTemplate.UnitTests.csproj", "{8CAA646D-2768-4066-A40C-6964788D1815}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Application", "src\CaravelTemplate.Application\CaravelTemplate.Application.csproj", "{7A8DA969-0634-4BB2-96D7-5AEDD575F4DD}"
 EndProject
@@ -36,7 +34,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Adapter.Mas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Adapter.Quartz", "src\CaravelTemplate.Adapter.Quartz\CaravelTemplate.Adapter.Quartz.csproj", "{DAAAB398-9983-4347-9E34-05A8C7951BBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Adapter.Api.Tests", "tests\CaravelTemplate.Adapter.Api.Tests\CaravelTemplate.Adapter.Api.Tests.csproj", "{F62D1026-58CD-4DC9-979A-BE55173BF69C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.IntegrationTests", "tests\CaravelTemplate.IntegrationTests\CaravelTemplate.IntegrationTests.csproj", "{F62D1026-58CD-4DC9-979A-BE55173BF69C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Adapter.Identity", "src\CaravelTemplate.Adapter.Identity\CaravelTemplate.Adapter.Identity.csproj", "{7D7483B2-7790-473A-8092-DEC130F10A2D}"
 EndProject
@@ -52,10 +50,6 @@ Global
 		{BE3CC293-8C8C-4079-A23C-C124960D43FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE3CC293-8C8C-4079-A23C-C124960D43FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE3CC293-8C8C-4079-A23C-C124960D43FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E634EDEA-FA06-4735-A7CE-B4FB67472C0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E634EDEA-FA06-4735-A7CE-B4FB67472C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E634EDEA-FA06-4735-A7CE-B4FB67472C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E634EDEA-FA06-4735-A7CE-B4FB67472C0B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8CAA646D-2768-4066-A40C-6964788D1815}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8CAA646D-2768-4066-A40C-6964788D1815}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CAA646D-2768-4066-A40C-6964788D1815}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -99,7 +93,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BE3CC293-8C8C-4079-A23C-C124960D43FD} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
-		{E634EDEA-FA06-4735-A7CE-B4FB67472C0B} = {CEF340C6-0561-4386-848C-A030FF522B00}
 		{8CAA646D-2768-4066-A40C-6964788D1815} = {CEF340C6-0561-4386-848C-A030FF522B00}
 		{7A8DA969-0634-4BB2-96D7-5AEDD575F4DD} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
 		{6EB13B52-761F-4562-BC83-8F34DEE651A7} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}

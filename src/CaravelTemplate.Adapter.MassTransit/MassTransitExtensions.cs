@@ -34,8 +34,8 @@ public static class MassTransitExtensions
                  
                  config.ConfigureEndpoints(context);
              });
-            
-            services.AddSingleton<IPublisher, MassTransitPublisher>();
         });
+        
+        services.AddSingleton<IPublisher, MassTransitPublisher>();
     }
 }

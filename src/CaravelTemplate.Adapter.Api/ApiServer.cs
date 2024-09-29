@@ -1,7 +1,13 @@
 using Asp.Versioning;
-using Caravel.MediatR;
+using Caravel.AspNetCore.Endpoint;
+using Caravel.AspNetCore.Middleware;
+using Caravel.AspNetCore.Security;
+using Caravel.MediatR.Logging;
+using Caravel.MediatR.Validation;
+using Caravel.Security;
 using CaravelTemplate.Adapter.Api.Extensions;
 using CaravelTemplate.Application;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.FeatureManagement;
 using Microsoft.FeatureManagement.FeatureFilters;
@@ -22,7 +28,10 @@ public class ApiServer
             .AddFeatureManagement(builder.Configuration.GetSection("FeatureManagement"))
             .AddFeatureFilter<PercentageFilter>();
 
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+        builder.Services.AddProblemDetails();
         builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<IUserContext, UserContext>();
         builder.Services.AddOpenApi();
         builder.Services.AddApiVersioning(options =>
         {
@@ -39,13 +48,15 @@ public class ApiServer
             options.SubstituteApiVersionInUrl = true;
         });
         
+        builder.Services.AddValidatorsFromAssembly(typeof(IApplicationAssemblyMarker).Assembly);
         builder.Services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(typeof(IApplicationAssemblyMarker).Assembly);
-            cfg.AddOpenBehavior(typeof(ValidationRequestBehavior<,>));
+            cfg.AddOpenBehavior(typeof(LoggingPipelineBehaviour<,>));
+            cfg.AddOpenBehavior(typeof(ValidationPipelineBehavior<,>));
         });
-
-        builder.Services.AddEndpoints(typeof(ApiServer).Assembly);
+        
+        builder.Services.AddEndpointFeatures(typeof(ApiServer).Assembly);
         builder.Services.AddAuthorization();
         builder.Services.AddAuthentication()
             .AddBearerToken(IdentityConstants.BearerScheme);
@@ -69,12 +80,16 @@ public class ApiServer
             _application.UseSwaggerUI();
         }
         
-        //TODO: Add Middleware Enrichers
+        _application.UseExceptionHandler();
+        _application.UseMiddleware<ActivityEnrichingMiddleware>();
+        _application.UseMiddleware<SecurityResponseHeadersMiddleware>();
+        _application.UseMiddleware<TraceIdResponseMiddleware>();
+        
         _application.UseSerilogRequestLogging();
         _application.UseHttpsRedirection();
         
         // Map the application endpoints
-        _application.MapEndpoints(versionedGroup);
+        _application.MapEndpointFeatures(versionedGroup);
         webApplicationOptions.Invoke(_application);
     }
 

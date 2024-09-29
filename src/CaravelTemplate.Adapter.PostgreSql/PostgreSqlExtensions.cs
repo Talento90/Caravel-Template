@@ -8,13 +8,9 @@ public static class PostgreSqlExtensions
 {
     public static void RegisterPostgreSql(this IServiceCollection services, PostgreSqlOptions options)
     {
-        services.AddDbContext<ApplicationDbContext>((optionsBuilder =>
+        services.AddDbContext<ApplicationDbContext>(optionsBuilder =>
         {
-            optionsBuilder.UseNpgsql(options.ConnectionString, optionBuilder =>
-                {
-                    
-                }
-            );
-        }));
+            optionsBuilder.UseNpgsql(options.ConnectionString);
+        });
     }
 }

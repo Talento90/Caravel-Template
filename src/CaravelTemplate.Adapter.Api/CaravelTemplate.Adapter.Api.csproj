@@ -11,6 +11,7 @@
         <PackageReference Include="Caravel" />
         <PackageReference Include="Caravel.AspNetCore" />
         <PackageReference Include="Caravel.MediatR" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
         <PackageReference Include="Mapster" />
         <PackageReference Include="MediatR" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8"/>

@@ -1,4 +1,5 @@
 ﻿using CaravelTemplate.Books;
+using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
 
 namespace CaravelTemplate.Adapter.PostgreSql;
@@ -20,5 +21,11 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         modelBuilder.HasDefaultSchema(Schema);
+    }
+    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseExceptionProcessor();
     }
 }

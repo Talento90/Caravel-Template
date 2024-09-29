@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CaravelTemplate.Adapter.PostgreSql.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240901104951_CreateApplicationSchema")]
+    [Migration("20240928155819_CreateApplicationSchema")]
     partial class CreateApplicationSchema
     {
         /// <inheritdoc />
@@ -32,7 +32,7 @@ namespace CaravelTemplate.Adapter.PostgreSql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("Created")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("CreatedBy")
@@ -47,10 +47,10 @@ namespace CaravelTemplate.Adapter.PostgreSql.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<DateTimeOffset>("Updated")
+                    b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UpdatedBy")
+                    b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");

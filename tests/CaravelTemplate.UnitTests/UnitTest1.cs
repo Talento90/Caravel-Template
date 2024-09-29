@@ -1,4 +1,4 @@
-namespace CaravelTemplate.Application.Tests;
+namespace CaravelTemplate.UnitTests;
 
 public class UnitTest1
 {

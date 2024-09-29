@@ -37,7 +37,5 @@
         <PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore"/>
         <PackageReference Include="OpenTelemetry.Instrumentation.Http"/>
         <PackageReference Include="OpenTelemetry.Instrumentation.Runtime"/>
-
     </ItemGroup>
-
 </Project>

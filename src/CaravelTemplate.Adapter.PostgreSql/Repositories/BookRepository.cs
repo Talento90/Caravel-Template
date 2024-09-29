@@ -23,8 +23,11 @@ public class BookRepository : IBookRepository
 
     public async Task<Result<Book>> GetBookAsync(Guid id, CancellationToken ct)
     {
-        var book = await DbContext.Books.FindAsync([id], cancellationToken: ct);
-
+        var book = await DbContext.Books
+            .Where(b => b.Id == id)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(ct);
+        
         return book is not null ? Result<Book>.Success(book) : Result<Book>.Failure(BookErrors.NotFound(id));
     }
 

@@ -21,7 +21,6 @@ This template uses Caravel package as an SDK and it bootstraps a full functional
 * Business logic using CQRS pattern + behaviours  ([MediatR](https://github.com/jbogard/MediatR))
 * Message bus using ([MassTransit](https://github.com/MassTransit/MassTransit))
 * Job Schedulers using ([Quartz](https://github.com/quartznet/quartznet))
-* Outbox Pattern using ([MassTransit](https://github.com/MassTransit/MassTransit)) + ([Quartz](https://github.com/quartznet/quartznet))
 * Observability + Dashboard using ([OpenTelemetry](https://github.com/open-telemetry/opentelemetry-dotnet)) and Aspire
 * Entity Framework and Migrations using PostgreSQL
 * Health Check mechanism

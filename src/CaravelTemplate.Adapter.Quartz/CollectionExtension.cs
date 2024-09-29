@@ -19,7 +19,7 @@ public static class CollectionExtension
         services.AddQuartz(quartzConfig =>
         {
             quartzConfig.SchedulerName = options.SchedulerName;
-
+        
             quartzConfig.UsePersistentStore(storeOptions =>
             {
                 storeOptions.UseSystemTextJsonSerializer();
@@ -31,7 +31,7 @@ public static class CollectionExtension
             });
             
             quartzConfig.UseDefaultThreadPool(tp => { tp.MaxConcurrency = 10; });
-
+        
             // Schedule jobs
             quartzConfig.ScheduleJob<HelloWorldJob>(trigger => trigger
                 .WithIdentity(nameof(HelloWorldJob))
