@@ -27,7 +27,7 @@ This template uses Caravel package as an SDK and it bootstraps a full functional
 * OpenApi 3.0 Spec using [Swashbuckle](https://github.com/domaindrivendev/Swashbuckle)
 * Docker and Docker Compose
 * Logging using [Serilog](https://serilog.net/)
-* Testing using [Bogus](https://github.com/bchavez/Bogus) (Fake data generator) + [Fluent Assertions](https://fluentassertions.com/) + [Test Containers](https://github.com/testcontainers/testcontainers-dotnet)
+* Testing using [Bogus](https://github.com/bchavez/Bogus) (Fake data generator) + [Fluent Assertions](https://fluentassertions.com/) + [Test Containers](https://github.com/testcontainers/testcontainers-dotnet) + [Respawn](https://github.com/jbogard/Respawn) (Database Cleanup)
 
 
 ### Aspire Dashboard

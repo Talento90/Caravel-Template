@@ -24,10 +24,10 @@ try
         
         builder.Services.AddAdapterPostgreSql(builder.Configuration);
         builder.Services.AddIdentityAdapter(builder.Configuration);
+        builder.Services.AddMassTransitAdapter(builder.Configuration);
         builder.Services.AddOpenTelemetry(builder.Configuration, builder.Environment);
         
         //builder.Services.AddQuartzAdapter(builder.Configuration);
-        //builder.Services.AddMassTransitAdapter(builder.Configuration);
     }, (application =>
     {
         // Map other modules endpoints

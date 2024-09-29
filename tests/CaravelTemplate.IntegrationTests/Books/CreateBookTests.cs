@@ -1,20 +1,23 @@
 using System.Net;
 using System.Net.Http.Json;
 using Caravel.AspNetCore.Http;
+using CaravelTemplate.Adapter.MassTransit.Consumers;
 using CaravelTemplate.Application.Books;
-using CaravelTemplate.IntegrationTests.Fixtures;
+using CaravelTemplate.Application.Messaging;
+using CaravelTemplate.IntegrationTests.Factories;
+using MassTransit.Testing;
 
 namespace CaravelTemplate.IntegrationTests.Books;
 
 // Shared Fixture across all Tests
 [Collection(nameof(IntegrationTestCollection))]
-public class CreateBookTestsServerFixture(TestServerFixture serverFixture) : IAsyncLifetime
+public class CreateBookTests(TestingWebApplicationFactory factory) : BaseIntegrationTest(factory)
 {
     [Fact]
     public async Task Should_Return_400StatusCode_When_Book_Not_Valid()
     {
         var bookRequest = new CreateBook.Request("", "My Testing Book");
-        var httpClient = serverFixture.TestServer.CreateClient();
+        var httpClient = TestServer.CreateClient();
 
         var response = await httpClient.PostAsJsonAsync($"/api/v1/books", bookRequest);
 
@@ -27,12 +30,12 @@ public class CreateBookTestsServerFixture(TestServerFixture serverFixture) : IAs
         apiError!.Errors.Should().HaveCount(1);
         apiError!.Errors!.First().Key.Should().Be("Name");
     }
-    
+
     [Fact]
     public async Task Should_Return_201StatusCode_When_Book_Is_Valid()
     {
         var bookRequest = new CreateBook.Request("My Book", "My Testing Book");
-        var httpClient = serverFixture.TestServer.CreateClient();
+        var httpClient = TestServer.CreateClient();
 
         var response = await httpClient.PostAsJsonAsync($"/api/v1/books", bookRequest);
 
@@ -43,12 +46,13 @@ public class CreateBookTestsServerFixture(TestServerFixture serverFixture) : IAs
         bookResponse.Should().NotBeNull();
         bookResponse!.Name.Should().Be(bookRequest.Name);
         bookResponse!.Description.Should().Be(bookRequest.Description);
-    }
 
-    public Task InitializeAsync() => Task.CompletedTask;
+        var harness = TestServer.Services.GetTestHarness();
+        var consumerTestHarness = harness.GetConsumerHarness<BookCreatedConsumer>();
 
-    public async Task DisposeAsync()
-    {
-        await serverFixture.CleanupApplicationDbContext();
+        var consumer =
+            await consumerTestHarness.Consumed.Any<BookCreatedMessage>(x => x.Context.Message.Book.Name == "My Book");
+
+        consumer.Should().BeTrue();
     }
 }

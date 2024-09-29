@@ -1,10 +1,12 @@
 using Caravel.Functional;
 using CaravelTemplate.Application.Data;
+using CaravelTemplate.Application.Messaging;
 using CaravelTemplate.Application.Metrics;
 using CaravelTemplate.Books;
 using FluentValidation;
 using Mapster;
 using MediatR;
+using IPublisher = CaravelTemplate.Application.Messaging.IPublisher;
 
 namespace CaravelTemplate.Application.Books;
 
@@ -27,11 +29,13 @@ public class CreateBook
         {
             private readonly IUnitOfWork _unitOfWork;
             private readonly BookMetrics _metrics;
+            private readonly IPublisher _publisher;
 
-            public Handler(IUnitOfWork unitOfWork, BookMetrics metrics)
+            public Handler(IUnitOfWork unitOfWork, BookMetrics metrics, IPublisher publisher)
             {
                 _unitOfWork = unitOfWork;
                 _metrics = metrics;
+                _publisher = publisher;
             }
 
             public async Task<Result<Response>> Handle(Request request, CancellationToken ct)
@@ -41,14 +45,15 @@ public class CreateBook
 
                 await _unitOfWork.SaveChangesAsync(ct);
 
-                if (result.IsSuccess)
+                if (!result.IsSuccess)
                 {
-                    _metrics.IncrementBookCreated(book.Id);
+                    return Result<Response>.Failure(result.Error);
+                    
                 }
 
-                return result.IsSuccess
-                    ? Result<Response>.Success(book.Adapt<Response>())
-                    : Result<Response>.Failure(result.Error);
+                await _publisher.PublishAsync(new BookCreatedMessage(book.Id, book), ct);
+                _metrics.IncrementBookCreated(book.Id);
+                return Result<Response>.Success(book.Adapt<Response>());
             }
         }
     }
