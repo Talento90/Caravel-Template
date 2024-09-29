@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\CaravelTemplate.Adapter.Api\CaravelTemplate.Adapter.Api.csproj"/>
+        <ProjectReference Include="..\CaravelTemplate.Adapter.Identity\CaravelTemplate.Adapter.Identity.csproj"/>
+        <ProjectReference Include="..\CaravelTemplate.Adapter.MassTransit\CaravelTemplate.Adapter.MassTransit.csproj"/>
+        <ProjectReference Include="..\CaravelTemplate.Adapter.PostgreSql\CaravelTemplate.Adapter.PostgreSql.csproj"/>
+        <ProjectReference Include="..\CaravelTemplate.Adapter.Quartz\CaravelTemplate.Adapter.Quartz.csproj"/>
+        <ProjectReference Include="..\CaravelTemplate.Application\CaravelTemplate.Application.csproj"/>
+        <ProjectReference Include="..\CaravelTemplate\CaravelTemplate.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Serilog"/>
+        <PackageReference Include="Serilog.AspNetCore"/>
+        <PackageReference Include="Serilog.Enrichers.Environment"/>
+        <PackageReference Include="Serilog.Enrichers.Process"/>
+        <PackageReference Include="Serilog.Enrichers.Thread"/>
+        <PackageReference Include="Serilog.Settings.Configuration"/>
+        <PackageReference Include="Serilog.Sinks.Console"/>
+        <PackageReference Include="Serilog.Sinks.OpenTelemetry"/>
+        <PackageReference Include="SerilogTracing.Sinks.OpenTelemetry"/>
+        <PackageReference Include="OpenTelemetry.Exporter.Console"/>
+        <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol"/>
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.Http"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.Runtime"/>
+    </ItemGroup>
+</Project>

@@ -1,0 +1,24 @@
+<Project>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>true</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Authors>Marco Talento</Authors>
+        <Company>Talento90</Company>
+        <Copyright>Talento90 (c) $([System.DateTime]::Now.ToString(yyyy))</Copyright>
+        <Repository>caravel-template</Repository>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+        <PackageProject>https://github.com/talento90/{repository}</PackageProject>
+        <PackageLicense>https://github.com/Talento90/Caravel-Template/blob/master/LICENSE</PackageLicense>
+    </PropertyGroup>
+</Project>

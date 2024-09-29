@@ -1,13 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>10</LangVersion>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-
     <ItemGroup>
-      <PackageReference Include="Caravel" Version="0.21.0" />
+      <PackageReference Include="Caravel" />
     </ItemGroup>
 
 </Project>

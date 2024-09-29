@@ -2,11 +2,11 @@
     "$schema": "http://json.schemastore.org/template",
     "author": "Talento90",
     "classifications": [
-      "WebAPI"
+      "API"
     ],
-    "name": "Caravel Web Api",
-    "identity": "Caravel.WebApi",
-    "shortName": "caravel-webapi",
+    "name": "Caravel Api",
+    "identity": "Caravel.Api",
+    "shortName": "caravel-api",
     "tags": {
       "language": "C#",
       "type": "project"

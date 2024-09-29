@@ -1,22 +1,44 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.WebApi", "src\CaravelTemplate.WebApi\CaravelTemplate.WebApi.csproj", "{4C9C8C73-266E-49D1-870B-D76DCB6B81E4}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D18F4EE3-9D82-41B6-A62C-F72A553159C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CEF340C6-0561-4386-848C-A030FF522B00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.WebApi.Tests", "tests\CaravelTemplate.WebApi.Tests\CaravelTemplate.WebApi.Tests.csproj", "{64D3EF15-58AA-4CF7-8DA4-0F1179E7FDC9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate", "src\CaravelTemplate\CaravelTemplate.csproj", "{BE3CC293-8C8C-4079-A23C-C124960D43FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Infrastructure", "src\CaravelTemplate.Infrastructure\CaravelTemplate.Infrastructure.csproj", "{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.UnitTests", "tests\CaravelTemplate.UnitTests\CaravelTemplate.UnitTests.csproj", "{8CAA646D-2768-4066-A40C-6964788D1815}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Core", "src\CaravelTemplate.Core\CaravelTemplate.Core.csproj", "{3BCE687A-423F-431F-8B83-474DC71268D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Application", "src\CaravelTemplate.Application\CaravelTemplate.Application.csproj", "{7A8DA969-0634-4BB2-96D7-5AEDD575F4DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.SetupConsole", "src\CaravelTemplate.SetupConsole\CaravelTemplate.SetupConsole.csproj", "{EC354EF9-A80B-4F13-9976-FA79F3334C50}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{54DD5359-8A3A-4499-99C8-C46194263695}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+		docker-compose.yaml = docker-compose.yaml
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		template.gitignore = template.gitignore
+		README.md = README.md
+		Dockerfile = Dockerfile
+		NuGet.config = NuGet.config
+		DatabaseMigrator.Dockerfile = DatabaseMigrator.Dockerfile
+		scripts\database-init.sh = scripts\database-init.sh
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Identity", "src\CaravelTemplate.Identity\CaravelTemplate.Identity.csproj", "{9A94B770-59A9-41F0-9595-77F48AF3FD9B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Host", "src\CaravelTemplate.Host\CaravelTemplate.Host.csproj", "{6EB13B52-761F-4562-BC83-8F34DEE651A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Adapter.PostgreSql", "src\CaravelTemplate.Adapter.PostgreSql\CaravelTemplate.Adapter.PostgreSql.csproj", "{4459CC58-48B5-40C7-8EB7-8825871DF971}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Adapter.Api", "src\CaravelTemplate.Adapter.Api\CaravelTemplate.Adapter.Api.csproj", "{5BE68226-D153-4DD9-91DF-F5F4DAAC1C1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Adapter.MassTransit", "src\CaravelTemplate.Adapter.MassTransit\CaravelTemplate.Adapter.MassTransit.csproj", "{AC935231-DA8B-4353-9D82-2A27326B918D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Adapter.Quartz", "src\CaravelTemplate.Adapter.Quartz\CaravelTemplate.Adapter.Quartz.csproj", "{DAAAB398-9983-4347-9E34-05A8C7951BBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.IntegrationTests", "tests\CaravelTemplate.IntegrationTests\CaravelTemplate.IntegrationTests.csproj", "{F62D1026-58CD-4DC9-979A-BE55173BF69C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Adapter.Identity", "src\CaravelTemplate.Adapter.Identity\CaravelTemplate.Adapter.Identity.csproj", "{7D7483B2-7790-473A-8092-DEC130F10A2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaravelTemplate.Migrator", "src\CaravelTemplate.Migrator\CaravelTemplate.Migrator.csproj", "{FFD2A590-F07C-495D-9526-F8C85B77B3CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,42 +46,62 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4C9C8C73-266E-49D1-870B-D76DCB6B81E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C9C8C73-266E-49D1-870B-D76DCB6B81E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C9C8C73-266E-49D1-870B-D76DCB6B81E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C9C8C73-266E-49D1-870B-D76DCB6B81E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64D3EF15-58AA-4CF7-8DA4-0F1179E7FDC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64D3EF15-58AA-4CF7-8DA4-0F1179E7FDC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64D3EF15-58AA-4CF7-8DA4-0F1179E7FDC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64D3EF15-58AA-4CF7-8DA4-0F1179E7FDC9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE3CC293-8C8C-4079-A23C-C124960D43FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BE3CC293-8C8C-4079-A23C-C124960D43FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE3CC293-8C8C-4079-A23C-C124960D43FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE3CC293-8C8C-4079-A23C-C124960D43FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3BCE687A-423F-431F-8B83-474DC71268D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3BCE687A-423F-431F-8B83-474DC71268D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3BCE687A-423F-431F-8B83-474DC71268D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3BCE687A-423F-431F-8B83-474DC71268D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC354EF9-A80B-4F13-9976-FA79F3334C50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC354EF9-A80B-4F13-9976-FA79F3334C50}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC354EF9-A80B-4F13-9976-FA79F3334C50}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC354EF9-A80B-4F13-9976-FA79F3334C50}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9A94B770-59A9-41F0-9595-77F48AF3FD9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A94B770-59A9-41F0-9595-77F48AF3FD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A94B770-59A9-41F0-9595-77F48AF3FD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A94B770-59A9-41F0-9595-77F48AF3FD9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CAA646D-2768-4066-A40C-6964788D1815}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CAA646D-2768-4066-A40C-6964788D1815}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CAA646D-2768-4066-A40C-6964788D1815}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CAA646D-2768-4066-A40C-6964788D1815}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A8DA969-0634-4BB2-96D7-5AEDD575F4DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A8DA969-0634-4BB2-96D7-5AEDD575F4DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A8DA969-0634-4BB2-96D7-5AEDD575F4DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A8DA969-0634-4BB2-96D7-5AEDD575F4DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EB13B52-761F-4562-BC83-8F34DEE651A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB13B52-761F-4562-BC83-8F34DEE651A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB13B52-761F-4562-BC83-8F34DEE651A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB13B52-761F-4562-BC83-8F34DEE651A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4459CC58-48B5-40C7-8EB7-8825871DF971}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4459CC58-48B5-40C7-8EB7-8825871DF971}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4459CC58-48B5-40C7-8EB7-8825871DF971}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4459CC58-48B5-40C7-8EB7-8825871DF971}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BE68226-D153-4DD9-91DF-F5F4DAAC1C1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE68226-D153-4DD9-91DF-F5F4DAAC1C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE68226-D153-4DD9-91DF-F5F4DAAC1C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE68226-D153-4DD9-91DF-F5F4DAAC1C1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC935231-DA8B-4353-9D82-2A27326B918D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC935231-DA8B-4353-9D82-2A27326B918D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC935231-DA8B-4353-9D82-2A27326B918D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC935231-DA8B-4353-9D82-2A27326B918D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAAAB398-9983-4347-9E34-05A8C7951BBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAAAB398-9983-4347-9E34-05A8C7951BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAAAB398-9983-4347-9E34-05A8C7951BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAAAB398-9983-4347-9E34-05A8C7951BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F62D1026-58CD-4DC9-979A-BE55173BF69C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F62D1026-58CD-4DC9-979A-BE55173BF69C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F62D1026-58CD-4DC9-979A-BE55173BF69C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F62D1026-58CD-4DC9-979A-BE55173BF69C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D7483B2-7790-473A-8092-DEC130F10A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D7483B2-7790-473A-8092-DEC130F10A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D7483B2-7790-473A-8092-DEC130F10A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D7483B2-7790-473A-8092-DEC130F10A2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFD2A590-F07C-495D-9526-F8C85B77B3CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD2A590-F07C-495D-9526-F8C85B77B3CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFD2A590-F07C-495D-9526-F8C85B77B3CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFD2A590-F07C-495D-9526-F8C85B77B3CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4C9C8C73-266E-49D1-870B-D76DCB6B81E4} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
-		{64D3EF15-58AA-4CF7-8DA4-0F1179E7FDC9} = {CEF340C6-0561-4386-848C-A030FF522B00}
 		{BE3CC293-8C8C-4079-A23C-C124960D43FD} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
-		{118F0ECE-8FED-4B07-94F2-9FAD15F3C6D6} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
-		{3BCE687A-423F-431F-8B83-474DC71268D2} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
-		{EC354EF9-A80B-4F13-9976-FA79F3334C50} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
-		{9A94B770-59A9-41F0-9595-77F48AF3FD9B} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
+		{8CAA646D-2768-4066-A40C-6964788D1815} = {CEF340C6-0561-4386-848C-A030FF522B00}
+		{7A8DA969-0634-4BB2-96D7-5AEDD575F4DD} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
+		{6EB13B52-761F-4562-BC83-8F34DEE651A7} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
+		{4459CC58-48B5-40C7-8EB7-8825871DF971} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
+		{5BE68226-D153-4DD9-91DF-F5F4DAAC1C1F} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
+		{AC935231-DA8B-4353-9D82-2A27326B918D} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
+		{DAAAB398-9983-4347-9E34-05A8C7951BBE} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
+		{F62D1026-58CD-4DC9-979A-BE55173BF69C} = {CEF340C6-0561-4386-848C-A030FF522B00}
+		{7D7483B2-7790-473A-8092-DEC130F10A2D} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
+		{FFD2A590-F07C-495D-9526-F8C85B77B3CF} = {D18F4EE3-9D82-41B6-A62C-F72A553159C6}
 	EndGlobalSection
 EndGlobal
